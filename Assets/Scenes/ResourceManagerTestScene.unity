@@ -252,9 +252,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rats: 2
   food: 100
-  foodDrain: 0
-  water: 100
-  waterDrain: 0
+  foodDrain: 1
+  water: 3
+  waterDrain: 2
 --- !u!4 &639611445
 Transform:
   m_ObjectHideFlags: 0
@@ -298,15 +298,15 @@ RectTransform:
   m_GameObject: {fileID: 772597003}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 10, y: 10, z: 10}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1968787386}
   m_Father: {fileID: 170200476}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -880, y: -525}
+  m_AnchoredPosition: {x: -11, y: -27}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &772597005
