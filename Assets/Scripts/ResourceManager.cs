@@ -1,4 +1,5 @@
 using System.Collections;
+using System.ComponentModel;
 using UnityEngine;
 
 public class ResourceManager : MonoBehaviour
@@ -38,6 +39,8 @@ public class ResourceManager : MonoBehaviour
     }
     private void Start()
     {
+        water = necessityStarter;
+        food = necessityStarter;
         StartCoroutine(DayCycle());
     }
 
