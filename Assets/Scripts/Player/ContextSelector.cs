@@ -10,6 +10,7 @@ public class ContextSelector : MonoBehaviour
     [SerializeField] private LayerMask layerMask;
     [SerializeField] private Material highlightMaterial;
     [SerializeField] private float dragDistanceOffset;
+    [SerializeField] private GameObject testObject;
     private ESelectionType selectionType;
     private GameObject selectedObject;
     private GameObject draggedObject;
@@ -57,6 +58,13 @@ public class ContextSelector : MonoBehaviour
         }
         if (clickInput.action.IsPressed())
         {
+            //Test code
+            Ray ray = playerCamera.ScreenPointToRay(mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
+            {
+                Instantiate(testObject, hit.point, Quaternion.identity);
+            }
             if (selectionType == ESelectionType.Character)
             {
                 DragCharacter(mousePosition, rayHitDistance);
