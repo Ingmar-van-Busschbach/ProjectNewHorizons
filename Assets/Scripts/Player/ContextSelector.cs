@@ -1,6 +1,9 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.EnhancedTouch;
+using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
+using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 
 [RequireComponent(typeof(Camera))]
 public class ContextSelector : MonoBehaviour
@@ -16,7 +19,12 @@ public class ContextSelector : MonoBehaviour
     private GameObject draggedObject;
     private Camera playerCamera;
     private float rayHitDistance;
+    private bool isHeld;
 
+    private void Awake()
+    {
+        EnhancedTouchSupport.Enable();
+    }
     private void Start()
     {
         playerCamera = GetComponent<Camera>();
@@ -25,8 +33,9 @@ public class ContextSelector : MonoBehaviour
     private void Update()
     {
         Vector2 mousePosition = mousePositionInput.action.ReadValue<Vector2>();
-        if (clickInput.action.WasPressedThisFrame())
+        if (clickInput.action.WasPressedThisFrame() || (Touch.activeFingers.Count == 1 && !isHeld))
         {
+            isHeld = true;
             Ray ray = playerCamera.ScreenPointToRay(mousePosition);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
@@ -48,23 +57,23 @@ public class ContextSelector : MonoBehaviour
                         break;
                 }
             }
+            else
+            {
+                selectionType = ESelectionType.None;
+                selectedObject = null;
+            }
         }
-        else if(clickInput.action.WasReleasedThisFrame())
+        else if(clickInput.action.WasReleasedThisFrame() || (Touch.activeFingers.Count == 0 && isHeld))
         {
+            isHeld = false;
             if(selectionType == ESelectionType.Character)
             {
                 ReleaseCharacter(mousePosition);
             }
         }
-        if (clickInput.action.IsPressed())
+        if (isHeld)
         {
-            //Test code
-            Ray ray = playerCamera.ScreenPointToRay(mousePosition);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
-            {
-                Instantiate(testObject, hit.point, Quaternion.identity);
-            }
+            Touch activeTouch = Touch.activeFingers[0].currentTouch;
             if (selectionType == ESelectionType.Character)
             {
                 DragCharacter(mousePosition, rayHitDistance);
@@ -78,7 +87,7 @@ public class ContextSelector : MonoBehaviour
 
     private void CameraMove()
     {
-        Debug.Log("Moving Camera");
+        //Debug.Log("Moving Camera");
     }
 
     private void DragCharacter(Vector2 mousePosition, float distance)
@@ -95,7 +104,7 @@ public class ContextSelector : MonoBehaviour
             rayHitDistance = hit.distance - dragDistanceOffset;
         }
         draggedObject.transform.position = location;
-        Debug.Log("Dragging Character");
+        //Debug.Log("Dragging Character");
     }
     private void StartDraggingCharacter(Vector3 location)
     {
