@@ -80,12 +80,18 @@ public class ContextSelector : MonoBehaviour
         {
             StartDraggingCharacter(location);
         }
+        Ray ray = playerCamera.ScreenPointToRay(mousePosition);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
+        {
+            rayHitDistance = hit.distance - dragDistanceOffset;
+        }
         draggedObject.transform.position = location;
         Debug.Log("Dragging Character");
     }
     private void StartDraggingCharacter(Vector3 location)
     {
-        draggedObject = Instantiate(selectedObject, location, selectedObject.transform.rotation);
+        draggedObject = Instantiate(selectedObject.transform.GetChild(0).gameObject, location, selectedObject.transform.rotation);
         if (draggedObject.TryGetComponent<Renderer>(out Renderer renderer))
         {
             renderer.material = highlightMaterial;
@@ -97,16 +103,24 @@ public class ContextSelector : MonoBehaviour
     }
     private void ReleaseCharacter(Vector2 mousePosition)
     {
-        Destroy(draggedObject);
         Ray ray = playerCamera.ScreenPointToRay(mousePosition);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
         {
-            if(hit.collider.gameObject.layer == 3) // Room layer
+            if(hit.collider.gameObject.TryGetComponent(out Room room))
             {
-                Debug.Log("Entering room!");
+                if(selectedObject.TryGetComponent(out Character character))
+                {
+                    if (character.currentRoom != null)
+                    {
+                        character.currentRoom.UnassignCharacter(character);
+                    }
+                    Transform location = room.AssignCharacter(character);
+                    character.MoveToLocation(location);
+                }
             }
         }
+        Destroy(draggedObject);
     }
 }
 
