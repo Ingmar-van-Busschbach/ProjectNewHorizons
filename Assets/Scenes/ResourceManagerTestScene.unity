@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 145903762}
   - component: {fileID: 145903761}
   m_Layer: 0
-  m_Name: RatManager
+  m_Name: RatVisit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -150,7 +150,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   babyMakingCooldown: 0
   ratVisitorCooldown: 10
-  ratPrefab: {fileID: 8362431676635767760, guid: 59f6e2420e0414a46b6a5017253ea7e0, type: 3}
+  ratPrefab: {fileID: 4092057586590713755, guid: e72c9f1fd4e39e54cac680a4fa55c71e, type: 3}
   spawnPosition: {fileID: 1495695018}
 --- !u!4 &145903762
 Transform:
@@ -196,7 +196,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97c9767c0b9b30b488fad216d2fa5f9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dayCycleTime: 1
+  dayCycleTime: 60
   rats: 2
   necessityStarter: 100
   foodDrain: 1
