@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class RatManager : MonoBehaviour
+public class RatVisit : MonoBehaviour
 {
     [SerializeField] private float babyMakingCooldown;
     [SerializeField] private float ratVisitorCooldown;
@@ -22,5 +22,6 @@ public class RatManager : MonoBehaviour
         Instantiate(ratPrefab, spawnPosition.position, transform.rotation);
         StartCoroutine(RatVisitor());
     }
+
 
 }
