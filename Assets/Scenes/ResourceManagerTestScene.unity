@@ -255,6 +255,7 @@ MonoBehaviour:
   foodDrain: 1
   water: 3
   waterDrain: 2
+  dayCycleTime: 1
 --- !u!4 &639611445
 Transform:
   m_ObjectHideFlags: 0

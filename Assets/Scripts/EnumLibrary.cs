@@ -1,3 +1,3 @@
 using UnityEngine;
 
-public enum EResourceType  {Stone, Resource2 }
+public enum EResourceType  {Rats, Stone, Food, Water }
