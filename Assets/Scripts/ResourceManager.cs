@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 
 public class ResourceManager : MonoBehaviour
@@ -16,6 +17,12 @@ public class ResourceManager : MonoBehaviour
 
     [Tooltip("amount nutrition drained per rat per day")]
     [SerializeField] private int nutritionDrain;
+
+    [Header("UI")]
+    [SerializeField] TMP_Text nutritionCounter;
+    [SerializeField] TMP_Text woodCounter;
+    [SerializeField] TMP_Text stoneCounter;
+    [SerializeField] TMP_Text metalCounter;
 
     private int nutrition;
     private int stone;
@@ -36,6 +43,7 @@ public class ResourceManager : MonoBehaviour
     private void Start()
     {
         nutrition = NutritionStarter;
+        nutritionCounter.text = nutrition.ToString();
         StartCoroutine(DayCycle());
     }
 
@@ -60,15 +68,19 @@ public class ResourceManager : MonoBehaviour
                 break;
             case EResourceType.Nutrition:
                 nutrition += amount;
+                nutritionCounter.text = nutrition.ToString();
                 break;
             case EResourceType.Wood: 
                 wood += amount;
+                woodCounter.text = wood.ToString();
                 break;
             case EResourceType.Stone:
-                stone += amount; 
+                stone += amount;
+                stoneCounter.text = stone.ToString();
                 break;
             case EResourceType.Metal:
                 metal += amount;
+                metalCounter.text = metal.ToString();
                 break;
         }
     }

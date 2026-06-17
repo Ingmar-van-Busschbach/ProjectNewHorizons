@@ -1282,6 +1282,10 @@ PrefabInstance:
     - target: {fileID: 6644853671639075950, guid: b51dd6b2d728029478782c8cebf8dd28, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
+      objectReference: {fileID: 4231335830192347951}
+    - target: {fileID: 6644853671639075950, guid: b51dd6b2d728029478782c8cebf8dd28, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: RoomResourceHandler, Assembly-CSharp
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1325,8 +1329,8 @@ MonoBehaviour:
   characterLocations: []
   collectButton: {fileID: 289877091730773153}
   roomType: 0
-  timeToProduce: 0
-  amountToProduce: 0
+  timeToProduce: 1
+  amountToProduce: 1
 --- !u!224 &6825953948024980807 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 470681599531933064, guid: b51dd6b2d728029478782c8cebf8dd28, type: 3}
