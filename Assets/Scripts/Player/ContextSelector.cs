@@ -145,6 +145,10 @@ public class ContextSelector : MonoBehaviour
         {
             collider.enabled = false;
         }
+        if(draggedObject.TryGetComponent<BillBoard>(out BillBoard billBoard))
+        {
+            billBoard.enabled = false;
+        }
     }
     private void ReleaseCharacter(Vector2 mousePosition)
     {
