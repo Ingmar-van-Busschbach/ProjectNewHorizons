@@ -1,4 +1,4 @@
 using UnityEngine;
 
-public enum EResourceType  {Rats, Stone, Food, Water }
-public enum ERoomType { ResourceRoom, FoodRoom, BedRoom}
+public enum EResourceType  {Rats, Nutrition, Wood, Stone, Metal }
+public enum ERoomType { ResourceRoomWood, ResourceRoomMetal, ResourceRoomStone, NutritionRoom, BedRoom}
