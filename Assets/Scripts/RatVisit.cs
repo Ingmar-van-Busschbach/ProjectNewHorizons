@@ -1,10 +1,8 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class RatVisit : MonoBehaviour
 {
-    [SerializeField] private float babyMakingCooldown;
     [SerializeField] private float ratVisitorCooldown;
     [SerializeField] private Character ratPrefab;
     [Tooltip("spawnPosition should be just outside of screen so it seems the rat walks to colony")]
@@ -23,8 +21,12 @@ public class RatVisit : MonoBehaviour
 
         Character spawnedRat = Instantiate(ratPrefab, spawnPosition.position, transform.rotation);
         Transform roomLocation = room.AssignCharacter(spawnedRat);
-        if (roomLocation == spawnedRat.gameObject.transform) { Destroy(spawnedRat); }
-        else {spawnedRat.MoveToLocation(roomLocation); } 
+        if (roomLocation == spawnedRat.gameObject.transform) { Destroy(spawnedRat.gameObject); }
+        else
+        {
+            spawnedRat.MoveToLocation(roomLocation);
+            ResourceManager.instance.ResourceHandler(EResourceType.Rats, 1);
+        } 
         StartCoroutine(RatVisitor());
     }
 

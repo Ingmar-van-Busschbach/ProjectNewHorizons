@@ -4,7 +4,7 @@ using UnityEngine;
 public class DropDownHandler : MonoBehaviour
 {
     [Tooltip("Put in the room that the dropdown is controlling")]
-    [SerializeField] private Room room;
+    [SerializeField] private RoomResourceHandler room;
     [SerializeField] private TMP_Dropdown dropdown;
 
     public void GetDropdownValue()

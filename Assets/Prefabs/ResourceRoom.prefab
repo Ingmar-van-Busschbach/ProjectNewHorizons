@@ -991,7 +991,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b03510138074bea45a32f4884aeb2c6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  room: {fileID: 0}
+  room: {fileID: 4231335830192347951}
   dropdown: {fileID: 1538216078481811}
 --- !u!1 &8525300227618494739
 GameObject:
@@ -1279,14 +1279,54 @@ PrefabInstance:
       propertyPath: m_Name
       value: ResourceRoom
       objectReference: {fileID: 0}
+    - target: {fileID: 6644853671639075950, guid: b51dd6b2d728029478782c8cebf8dd28, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 470681599531933064, guid: b51dd6b2d728029478782c8cebf8dd28, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8760323797633848227}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1069241902421526566, guid: b51dd6b2d728029478782c8cebf8dd28, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4231335830192347951}
   m_SourcePrefab: {fileID: 100100000, guid: b51dd6b2d728029478782c8cebf8dd28, type: 3}
+--- !u!114 &289877091730773153 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6644853671639075950, guid: b51dd6b2d728029478782c8cebf8dd28, type: 3}
+  m_PrefabInstance: {fileID: 6355312004002846927}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &6261181337627119849 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1069241902421526566, guid: b51dd6b2d728029478782c8cebf8dd28, type: 3}
+  m_PrefabInstance: {fileID: 6355312004002846927}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4231335830192347951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6261181337627119849}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c3ef11802c5aec498aab38e981e416c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterLocations: []
+  collectButton: {fileID: 289877091730773153}
+  roomType: 0
+  timeToProduce: 0
+  amountToProduce: 0
 --- !u!224 &6825953948024980807 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 470681599531933064, guid: b51dd6b2d728029478782c8cebf8dd28, type: 3}
