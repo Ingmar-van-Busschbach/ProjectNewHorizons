@@ -9,10 +9,16 @@ public class SpriteAnimator : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
-        navMeshAgent = transform.parent.GetComponent<NavMeshAgent>();
+        if(transform.parent != null)
+        {
+            navMeshAgent = transform.parent.gameObject.GetComponent<NavMeshAgent>();
+        }
     }
     void Update()
     {
-        animator.SetFloat("Speed", navMeshAgent.velocity.magnitude);   
+        if (navMeshAgent != null)
+        {
+            animator.SetFloat("Speed", navMeshAgent.velocity.magnitude);
+        }
     }
 }
