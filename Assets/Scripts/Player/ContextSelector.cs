@@ -9,19 +9,23 @@ using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 [RequireComponent(typeof(Camera))]
 public class ContextSelector : MonoBehaviour
 {
-    // Inputs
+    [Header("Inputs - Do not touch")]
     [SerializeField] private InputActionReference clickInput;
     [SerializeField] private InputActionReference pointerPositionInput;
     [SerializeField] private InputActionReference pointerDeltaInput;
-    
-    // Parameters
+
+    [Header("Core Configuration - Do not touch")]
     [SerializeField] private LayerMask layerMask;
     [SerializeField] private Material highlightMaterial;
-    [SerializeField] private float dragDistanceOffset = 1;
-    [SerializeField] private float cameraDragSpeed = 0.015f;
     [SerializeField] private Transform bottomLeftBounds;
     [SerializeField] private Transform topRightBounds;
-     
+
+    [Header("Settings")]
+    [Tooltip("The offset for the drag highlight. Should be a positive numner between 0 and 5.")]
+    [SerializeField] private float dragDistanceOffset = 1;
+    [Tooltip("Camera drag speed when touching the screen.")]
+    [SerializeField] private float cameraDragSpeed = 0.010f;
+
     // Internal Parameters
     private ESelectionType selectionType;
     private float rayHitDistance;
@@ -45,14 +49,17 @@ public class ContextSelector : MonoBehaviour
     private void Update()
     {
         Vector2 mousePosition = pointerPositionInput.action.ReadValue<Vector2>();
+
+        // On click/touch start
         if (clickInput.action.WasPressedThisFrame() || (Touch.activeFingers.Count == 1 && !isHeld))
         {
             isHeld = true;
+
             Ray ray = playerCamera.ScreenPointToRay(mousePosition);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
             {
-                rayHitDistance = hit.distance - dragDistanceOffset;
+                rayHitDistance = hit.distance - dragDistanceOffset; // Distance at which the highlight object will be placed during the drag event.
                 switch (hit.collider.gameObject.layer)
                 {
                     case 3: // Room layer
@@ -69,13 +76,15 @@ public class ContextSelector : MonoBehaviour
                         break;
                 }
             }
-            else
+            else // Fallback to not selecting anything if no object was hit with the raycast.
             {
-                selectionType = ESelectionType.None;
+                selectionType = ESelectionType.None; 
                 selectedObject = null;
             }
         }
-        else if(clickInput.action.WasReleasedThisFrame() || (Touch.activeFingers.Count == 0 && isHeld))
+
+        // On click/touch end
+        else if (clickInput.action.WasReleasedThisFrame() || (Touch.activeFingers.Count == 0 && isHeld))
         {
             isHeld = false;
             if(selectionType == ESelectionType.Character)
@@ -83,6 +92,8 @@ public class ContextSelector : MonoBehaviour
                 ReleaseCharacter(mousePosition);
             }
         }
+
+        // On click/touch continuous
         if (isHeld)
         {
             Touch activeTouch = Touch.activeFingers[0].currentTouch;
