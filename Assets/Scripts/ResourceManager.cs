@@ -42,7 +42,7 @@ public class ResourceManager : MonoBehaviour
     public IEnumerator DayCycle()
     {
         yield return new WaitForSeconds(dayCycleTime);
-        nutrition = nutritionDrain * rats;
+        nutrition -= nutritionDrain * rats;
         if (nutrition < 0 || rats < 0)
         {
             Debug.Log("oops you failed");
@@ -68,7 +68,7 @@ public class ResourceManager : MonoBehaviour
                 stone += amount; 
                 break;
             case EResourceType.Metal:
-                stone += amount;
+                metal += amount;
                 break;
         }
     }
