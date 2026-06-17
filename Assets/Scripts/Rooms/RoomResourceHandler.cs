@@ -10,7 +10,11 @@ public class RoomResourceHandler : Room
     public ERoomType roomType;
     [Tooltip("Time in seconds it takes to produce selected resource")]
     [SerializeField] private float timeToProduce;
-    [SerializeField] private int amountToProduce;
+    [Header("Amount to produce per resource")]
+    [SerializeField] private int nutritionAmount;
+    [SerializeField] private int woodAmount;
+    [SerializeField] private int stoneAmount;
+    [SerializeField] private int metalAmount;
 
     private void Start()
     {
@@ -27,20 +31,18 @@ public class RoomResourceHandler : Room
     {
         switch (roomType)
         {
+            case ERoomType.NutritionRoom:
+                ResourceManager.instance.ResourceHandler(EResourceType.Nutrition, nutritionAmount);
+                break;
             case ERoomType.ResourceRoomWood:
-                ResourceManager.instance.ResourceHandler(EResourceType.Wood, amountToProduce);
+                ResourceManager.instance.ResourceHandler(EResourceType.Wood, woodAmount);
                 break;
             case ERoomType.ResourceRoomStone:
-                ResourceManager.instance.ResourceHandler(EResourceType.Stone, amountToProduce);
+                ResourceManager.instance.ResourceHandler(EResourceType.Stone, stoneAmount);
                 break;
             case ERoomType.ResourceRoomMetal:
-                ResourceManager.instance.ResourceHandler(EResourceType.Metal, amountToProduce);
-                break;
-            case ERoomType.NutritionRoom:
-                ResourceManager.instance.ResourceHandler(EResourceType.Nutrition, amountToProduce);
-                break;
-                
-
+                ResourceManager.instance.ResourceHandler(EResourceType.Metal, metalAmount);
+                break; 
         }
     }
 
