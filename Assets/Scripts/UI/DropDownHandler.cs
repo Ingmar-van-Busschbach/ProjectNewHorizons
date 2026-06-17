@@ -1,0 +1,29 @@
+using TMPro;
+using UnityEngine;
+
+public class DropDownHandler : MonoBehaviour
+{
+    [Tooltip("Put in the room that the dropdown is controlling")]
+    [SerializeField] private Room room;
+    [SerializeField] private TMP_Dropdown dropdown;
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public void getDropdownValue()
+    {
+        int pickedEntry = dropdown.value;
+
+        switch (pickedEntry) 
+        {
+            case 0:
+                room.roomType = ERoomType.ResourceRoomWood;
+                break;
+            case 1:
+                room.roomType = ERoomType.ResourceRoomStone;
+                break;
+            case 2:
+                room.roomType = ERoomType.ResourceRoomMetal;
+                break;
+        }
+    
+    }
+}
