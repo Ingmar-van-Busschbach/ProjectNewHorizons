@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.EnhancedTouch;
@@ -8,18 +9,29 @@ using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 [RequireComponent(typeof(Camera))]
 public class ContextSelector : MonoBehaviour
 {
+    // Inputs
     [SerializeField] private InputActionReference clickInput;
-    [SerializeField] private InputActionReference mousePositionInput;
+    [SerializeField] private InputActionReference pointerPositionInput;
+    [SerializeField] private InputActionReference pointerDeltaInput;
+    
+    // Parameters
     [SerializeField] private LayerMask layerMask;
     [SerializeField] private Material highlightMaterial;
-    [SerializeField] private float dragDistanceOffset;
-    [SerializeField] private GameObject testObject;
+    [SerializeField] private float dragDistanceOffset = 1;
+    [SerializeField] private float cameraDragSpeed = 0.015f;
+    [SerializeField] private Transform bottomLeftBounds;
+    [SerializeField] private Transform topRightBounds;
+     
+    // Internal Parameters
     private ESelectionType selectionType;
+    private float rayHitDistance;
+    private bool isHeld;
+
+    // Components
     private GameObject selectedObject;
     private GameObject draggedObject;
     private Camera playerCamera;
-    private float rayHitDistance;
-    private bool isHeld;
+
 
     private void Awake()
     {
@@ -32,7 +44,7 @@ public class ContextSelector : MonoBehaviour
 
     private void Update()
     {
-        Vector2 mousePosition = mousePositionInput.action.ReadValue<Vector2>();
+        Vector2 mousePosition = pointerPositionInput.action.ReadValue<Vector2>();
         if (clickInput.action.WasPressedThisFrame() || (Touch.activeFingers.Count == 1 && !isHeld))
         {
             isHeld = true;
@@ -87,7 +99,13 @@ public class ContextSelector : MonoBehaviour
 
     private void CameraMove()
     {
-        //Debug.Log("Moving Camera");
+        Vector2 mouseDelta = pointerDeltaInput.action.ReadValue<Vector2>();
+        mouseDelta *= cameraDragSpeed;
+        transform.position = new Vector3(
+            Mathf.Clamp(transform.position.x - mouseDelta.x, bottomLeftBounds.position.x, topRightBounds.position.x),
+            Mathf.Clamp(transform.position.y - mouseDelta.y, bottomLeftBounds.position.y, topRightBounds.position.y),
+            transform.position.z
+            );
     }
 
     private void DragCharacter(Vector2 mousePosition, float distance)
@@ -104,7 +122,6 @@ public class ContextSelector : MonoBehaviour
             rayHitDistance = hit.distance - dragDistanceOffset;
         }
         draggedObject.transform.position = location;
-        //Debug.Log("Dragging Character");
     }
     private void StartDraggingCharacter(Vector3 location)
     {
