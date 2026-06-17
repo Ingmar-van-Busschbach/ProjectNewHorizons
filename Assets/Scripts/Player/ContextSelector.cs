@@ -16,7 +16,7 @@ public class ContextSelector : MonoBehaviour
 
     [Header("Core Configuration - Do not touch")]
     [SerializeField] private LayerMask layerMask;
-    [SerializeField] private Material highlightMaterial;
+    [SerializeField] private SpriteRenderer draggedObjectPrefab;
     [SerializeField] private Transform bottomLeftBounds;
     [SerializeField] private Transform topRightBounds;
 
@@ -33,7 +33,7 @@ public class ContextSelector : MonoBehaviour
 
     // Components
     private GameObject selectedObject;
-    private GameObject draggedObject;
+    private SpriteRenderer draggedObject;
     private Camera playerCamera;
 
 
@@ -136,22 +136,12 @@ public class ContextSelector : MonoBehaviour
     }
     private void StartDraggingCharacter(Vector3 location)
     {
-        draggedObject = Instantiate(selectedObject.transform.GetChild(0).gameObject, location, selectedObject.transform.rotation);
-        if (draggedObject.TryGetComponent<Renderer>(out Renderer renderer))
-        {
-            renderer.material = highlightMaterial;
-        }
-        if (draggedObject.TryGetComponent<Collider>(out Collider collider))
-        {
-            collider.enabled = false;
-        }
-        if(draggedObject.TryGetComponent<BillBoard>(out BillBoard billBoard))
-        {
-            billBoard.enabled = false;
-        }
+        draggedObject = Instantiate(draggedObjectPrefab, location, Quaternion.identity);
+        draggedObject.flipX = Vector3.Dot(selectedObject.transform.right, Vector3.right) < 0;
     }
     private void ReleaseCharacter(Vector2 mousePosition)
     {
+        Destroy(draggedObject.gameObject);
         Ray ray = playerCamera.ScreenPointToRay(mousePosition);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
@@ -169,7 +159,6 @@ public class ContextSelector : MonoBehaviour
                 }
             }
         }
-        Destroy(draggedObject);
     }
 }
 
