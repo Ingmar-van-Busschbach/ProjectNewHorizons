@@ -477,7 +477,7 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 72
-  highlightMaterial: {fileID: 2100000, guid: 9078af217f1bac241a0c5a216a7f2e34, type: 2}
+  draggedObjectPrefab: {fileID: 8325694758835055321, guid: 625167c9094e255489d8ad53dab69bcd, type: 3}
   bottomLeftBounds: {fileID: 5603905}
   topRightBounds: {fileID: 1869078641}
   dragDistanceOffset: 0.5
