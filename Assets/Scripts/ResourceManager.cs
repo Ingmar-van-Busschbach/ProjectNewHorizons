@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class ResourceManager : MonoBehaviour
 {
-    private ResourceManager instance;
+    public static ResourceManager instance;
 
     [Tooltip("amount of seconds in one day/night cycle")]
     [SerializeField] private float dayCycleTime = 1;
@@ -18,7 +18,7 @@ public class ResourceManager : MonoBehaviour
     [SerializeField] private int nutritionDrain;
 
     private int nutrition;
-    [SerializeField] private int stone;
+    private int stone;
     private int wood;
     private int metal;
 
@@ -51,7 +51,7 @@ public class ResourceManager : MonoBehaviour
         Debug.Log("ending day...");
         StartCoroutine(DayCycle());
     }
-    public void resourceHandler(EResourceType resource, int amount)
+    public void ResourceHandler(EResourceType resource, int amount)
     {
         switch (resource)
         {

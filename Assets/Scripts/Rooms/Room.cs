@@ -12,7 +12,6 @@ public class Room : MonoBehaviour
 
     [Header("Room Resource Handler")]
     [Tooltip("This doesn't have to be changed")]
-    [SerializeField] private ResourceManager resourceManager;
     [SerializeField] private Button collectButton;
     public ERoomType roomType;
     [Tooltip("Time in seconds it takes to produce selected resource")]
@@ -21,7 +20,7 @@ public class Room : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(roomResourceHandler());
+        StartCoroutine(RoomResourceHandler());
     }
     public Transform AssignCharacter(Character character)
     {
@@ -44,11 +43,11 @@ public class Room : MonoBehaviour
         }
     }
 
-    private IEnumerator roomResourceHandler()
+    private IEnumerator RoomResourceHandler()
     {
         yield return new WaitForSeconds(timeToProduce);
         collectButton.gameObject.SetActive(true);
-        StartCoroutine(roomResourceHandler());
+        StartCoroutine(RoomResourceHandler());
     }
 
     public void AddResources()
@@ -56,16 +55,16 @@ public class Room : MonoBehaviour
         switch (roomType)
         {
             case ERoomType.ResourceRoomWood:
-                resourceManager.resourceHandler(EResourceType.Wood, amountToProduce);
+                ResourceManager.instance.ResourceHandler(EResourceType.Wood, amountToProduce);
                 break;
             case ERoomType.ResourceRoomStone:
-                resourceManager.resourceHandler(EResourceType.Stone, amountToProduce);
+                ResourceManager.instance.ResourceHandler(EResourceType.Stone, amountToProduce);
                 break;
             case ERoomType.ResourceRoomMetal:
-                resourceManager.resourceHandler(EResourceType.Metal, amountToProduce);
+                ResourceManager.instance.ResourceHandler(EResourceType.Metal, amountToProduce);
                 break;
             case ERoomType.NutritionRoom:
-                resourceManager.resourceHandler(EResourceType.Nutrition, amountToProduce);
+                ResourceManager.instance.ResourceHandler(EResourceType.Nutrition, amountToProduce);
                 break;
         }
     }
