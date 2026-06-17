@@ -38,6 +38,8 @@ public class ResourceManager : MonoBehaviour
     }
     private void Start()
     {
+        water = necessityStarter;
+        food = necessityStarter;
         StartCoroutine(DayCycle());
     }
 
