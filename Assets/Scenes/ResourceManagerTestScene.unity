@@ -1161,6 +1161,10 @@ PrefabInstance:
       value: Room
       objectReference: {fileID: 0}
     - target: {fileID: 6435894610388345562, guid: b51dd6b2d728029478782c8cebf8dd28, type: 3}
+      propertyPath: collectButton
+      value: 
+      objectReference: {fileID: 739688797}
+    - target: {fileID: 6435894610388345562, guid: b51dd6b2d728029478782c8cebf8dd28, type: 3}
       propertyPath: timeToProduce
       value: 1
       objectReference: {fileID: 0}
