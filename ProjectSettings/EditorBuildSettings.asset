@@ -8,6 +8,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MainLevel.unity
     guid: 3790e64e1012f0f4cb3e2e39ed974335
+  - enabled: 1
+    path: Assets/Scenes/ResourceManagerTestScene.unity
+    guid: 6b43ecee575699c45ba05186defd9613
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
