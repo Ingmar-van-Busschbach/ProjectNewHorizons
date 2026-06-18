@@ -28,11 +28,11 @@ public class ResourceManager : MonoBehaviour
     [SerializeField] TMP_Text metalCounter;
     [SerializeField] Slider plagueSlider;
 
-    private int nutrition;
-    private int stone;
-    private int wood;
-    private int metal;
-    private int plague;
+    public int nutrition;
+    public int stone;
+    public int wood;
+    public int metal;
+    public int plague;
 
     private void Awake()
     {
