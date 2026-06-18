@@ -63,23 +63,19 @@ public class ContextSelector : MonoBehaviour
                 switch (hit.collider.gameObject.layer)
                 {
                     case 3: // Room layer
-                        selectionType = ESelectionType.Room;
-                        selectedObject = hit.collider.gameObject;
+                        SelectRoom(hit);
                         break;
                     case 6: // Character layer
-                        selectionType = ESelectionType.Character;
-                        selectedObject = hit.collider.gameObject;
+                        SelectCharacter(hit);
                         break;
                     default:
-                        selectionType = ESelectionType.None;
-                        selectedObject = null;
+                        Deselect();
                         break;
                 }
             }
             else // Fallback to not selecting anything if no object was hit with the raycast.
             {
-                selectionType = ESelectionType.None; 
-                selectedObject = null;
+                Deselect();
             }
         }
 
@@ -107,7 +103,21 @@ public class ContextSelector : MonoBehaviour
             }
         }
     }
-
+    private void SelectCharacter(RaycastHit hit)
+    {
+        selectionType = ESelectionType.Character;
+        selectedObject = hit.collider.gameObject;
+    }
+    private void SelectRoom(RaycastHit hit)
+    {
+        selectionType = ESelectionType.Room;
+        selectedObject = hit.collider.gameObject;
+    }
+    private void Deselect()
+    {
+        selectionType = ESelectionType.None;
+        selectedObject = null;
+    }
     private void CameraMove()
     {
         Vector2 mouseDelta = pointerDeltaInput.action.ReadValue<Vector2>();
@@ -137,7 +147,7 @@ public class ContextSelector : MonoBehaviour
     private void StartDraggingCharacter(Vector3 location)
     {
         draggedObject = Instantiate(draggedObjectPrefab, location, Quaternion.identity);
-        draggedObject.flipX = Vector3.Dot(selectedObject.transform.right, Vector3.right) < 0;
+        //draggedObject.flipX = Vector3.Dot(selectedObject.transform.right, Vector3.right) < 0;
     }
     private void ReleaseCharacter(Vector2 mousePosition)
     {
@@ -161,5 +171,3 @@ public class ContextSelector : MonoBehaviour
         }
     }
 }
-
-public enum ESelectionType { None, Character, Room }

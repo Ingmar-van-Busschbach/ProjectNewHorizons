@@ -5,17 +5,21 @@ using UnityEngine;
 public class Room : MonoBehaviour
 {
     [SerializeField] private List<Transform> characterLocations = new();
-    [SerializeField] private Dictionary<Character, int> characterIndex = new();
+    [SerializeField] protected Dictionary<Character, int> characterIndex = new();
+    [SerializeField] private bool unlockedRoom;
 
     public Transform AssignCharacter(Character character)
     {
-        for(int i = 0; i < characterLocations.Count; i++)
+        if (unlockedRoom)
         {
-            if (!characterIndex.Values.Contains(i))
+            for (int i = 0; i < characterLocations.Count; i++)
             {
-                characterIndex.Add(character, i);
-                character.currentRoom = this;
-                return characterLocations[i];
+                if (!characterIndex.Values.Contains(i))
+                {
+                    characterIndex.Add(character, i);
+                    character.currentRoom = this;
+                    return characterLocations[i];
+                }
             }
         }
         return character.gameObject.transform;
