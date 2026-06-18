@@ -1671,6 +1671,65 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &5463680783453757452
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2208204854103593232}
+  - component: {fileID: 6631720333473854156}
+  m_Layer: 0
+  m_Name: ResourceManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2208204854103593232
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5463680783453757452}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -960, y: -540, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1612376574534366874}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6631720333473854156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5463680783453757452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97c9767c0b9b30b488fad216d2fa5f9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dayCycleTime: 60
+  rats: 2
+  NutritionStarter: 100
+  nutritionDrain: 0
+  ratCounter: {fileID: 8774119638695211420}
+  nutritionCounter: {fileID: 8096318372282386459}
+  woodCounter: {fileID: 8277235937675477037}
+  stoneCounter: {fileID: 5566034129541462767}
+  metalCounter: {fileID: 2393056250435424831}
+  plagueSlider: {fileID: 3002351143655800874}
+  nutrition: 0
+  stone: 50
+  wood: 50
+  metal: 50
+  plague: 0
 --- !u!1 &6031023047649185952
 GameObject:
   m_ObjectHideFlags: 0
@@ -2811,6 +2870,7 @@ RectTransform:
   - {fileID: 6479572606723251132}
   - {fileID: 8832798813679432159}
   - {fileID: 3678505535961032336}
+  - {fileID: 2208204854103593232}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
