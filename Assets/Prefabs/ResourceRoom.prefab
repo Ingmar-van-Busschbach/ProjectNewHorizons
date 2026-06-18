@@ -1709,6 +1709,10 @@ MonoBehaviour:
   - {fileID: 2199031871022922024}
   - {fileID: 8480083828792215178}
   unlockedRoom: 1
+  roomName: Room 1
+  woodToUnlock: 10
+  stoneToUnlock: 15
+  metalToUnlock: 20
   collectButton: {fileID: 7958190701420210354}
   roomType: 0
   timeToProduce: 0
