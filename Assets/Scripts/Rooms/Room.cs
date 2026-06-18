@@ -31,4 +31,9 @@ public class Room : MonoBehaviour
             characterIndex.Remove(character);
         }
     }
+
+    public void UnlockRoom()
+    {
+        unlockedRoom = true;
+    }
 }
