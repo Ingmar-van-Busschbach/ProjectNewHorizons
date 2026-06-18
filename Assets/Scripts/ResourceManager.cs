@@ -1,6 +1,8 @@
 using System.Collections;
 using TMPro;
+using UnityEditor.UIElements;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ResourceManager : MonoBehaviour
 {
@@ -19,15 +21,18 @@ public class ResourceManager : MonoBehaviour
     [SerializeField] private int nutritionDrain;
 
     [Header("UI")]
+    [SerializeField] TMP_Text ratCounter;
     [SerializeField] TMP_Text nutritionCounter;
     [SerializeField] TMP_Text woodCounter;
     [SerializeField] TMP_Text stoneCounter;
     [SerializeField] TMP_Text metalCounter;
+    [SerializeField] Slider plagueSlider;
 
     private int nutrition;
     private int stone;
     private int wood;
     private int metal;
+    private int plague;
 
     private void Awake()
     {
@@ -65,6 +70,7 @@ public class ResourceManager : MonoBehaviour
         {
             case EResourceType.Rats:
                 rats += amount;
+                ratCounter.text = rats.ToString();
                 break;
             case EResourceType.Nutrition:
                 nutrition += amount;
@@ -81,6 +87,10 @@ public class ResourceManager : MonoBehaviour
             case EResourceType.Metal:
                 metal += amount;
                 metalCounter.text = metal.ToString();
+                break;
+            case EResourceType.Plague:
+                plague += amount;
+                plagueSlider.value = plague; 
                 break;
         }
     }
