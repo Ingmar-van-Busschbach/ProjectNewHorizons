@@ -6,7 +6,11 @@ public class Room : MonoBehaviour
 {
     [SerializeField] private List<Transform> characterLocations = new();
     [SerializeField] protected Dictionary<Character, int> characterIndex = new();
-    [SerializeField] private bool unlockedRoom;
+    public bool unlockedRoom;
+    public string roomName;
+    public int woodToUnlock;
+    public int stoneToUnlock;
+    public int metalToUnlock;
 
     public Transform AssignCharacter(Character character)
     {
@@ -30,10 +34,5 @@ public class Room : MonoBehaviour
         {
             characterIndex.Remove(character);
         }
-    }
-
-    public void UnlockRoom()
-    {
-        unlockedRoom = true;
     }
 }
