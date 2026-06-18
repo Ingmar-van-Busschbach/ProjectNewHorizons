@@ -3,6 +3,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.EnhancedTouch;
+using UnityEngine.UIElements;
 using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 
@@ -19,12 +20,14 @@ public class ContextSelector : MonoBehaviour
     [SerializeField] private SpriteRenderer draggedObjectPrefab;
     [SerializeField] private Transform bottomLeftBounds;
     [SerializeField] private Transform topRightBounds;
+    [SerializeField] private RectTransform unlockMenu;
 
     [Header("Settings")]
     [Tooltip("The offset for the drag highlight. Should be a positive numner between 0 and 5.")]
     [SerializeField] private float dragDistanceOffset = 1;
     [Tooltip("Camera drag speed when touching the screen.")]
     [SerializeField] private float cameraDragSpeed = 0.010f;
+    [SerializeField] private float menuAnimationSpeed = 100;
 
     // Internal Parameters
     private ESelectionType selectionType;
@@ -35,7 +38,7 @@ public class ContextSelector : MonoBehaviour
     private GameObject selectedObject;
     private SpriteRenderer draggedObject;
     private Camera playerCamera;
-
+    private Coroutine unlockMenuAnimation;
 
     private void Awake()
     {
@@ -112,11 +115,40 @@ public class ContextSelector : MonoBehaviour
     {
         selectionType = ESelectionType.Room;
         selectedObject = hit.collider.gameObject;
+        if(selectedObject.TryGetComponent(out Room room))
+        {
+            if (!room.unlockedRoom)
+            {
+                if (unlockMenuAnimation != null)
+                {
+                    StopCoroutine(unlockMenuAnimation);
+                }
+                unlockMenuAnimation = StartCoroutine(AnimateUnlockMenu(new Vector2(0, 50)));
+                if(unlockMenu.TryGetComponent(out UnlockMenuHandler unlockMenuHandler))
+                {
+                    unlockMenuHandler.SetRoomToUnlock(room);
+                }
+            }
+        }
+        
     }
     private void Deselect()
     {
         selectionType = ESelectionType.None;
         selectedObject = null;
+        if (unlockMenuAnimation != null)
+        {
+            StopCoroutine(unlockMenuAnimation);
+        }
+        unlockMenuAnimation = StartCoroutine(AnimateUnlockMenu(new Vector2(0, -50)));
+    }
+    private IEnumerator AnimateUnlockMenu(Vector2 position)
+    {
+        while (Vector3.Distance(unlockMenu.anchoredPosition, position) > 0)
+        {
+            unlockMenu.anchoredPosition = Vector3.MoveTowards(unlockMenu.anchoredPosition, position, menuAnimationSpeed * Time.fixedDeltaTime);
+            yield return new WaitForFixedUpdate();
+        }
     }
     private void CameraMove()
     {
@@ -160,12 +192,13 @@ public class ContextSelector : MonoBehaviour
             {
                 if(selectedObject.TryGetComponent(out Character character))
                 {
-                    if (character.currentRoom != null)
-                    {
-                        character.currentRoom.UnassignCharacter(character);
-                    }
+                    Room oldRoom = character.currentRoom;
                     Transform location = room.AssignCharacter(character);
                     character.MoveToLocation(location);
+                    if (oldRoom != null && location != character.gameObject.transform)
+                    {
+                        oldRoom.UnassignCharacter(character);
+                    }
                 }
             }
         }
