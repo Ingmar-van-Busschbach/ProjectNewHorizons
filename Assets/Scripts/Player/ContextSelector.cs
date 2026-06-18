@@ -95,7 +95,6 @@ public class ContextSelector : MonoBehaviour
         // On click/touch continuous
         if (isHeld)
         {
-            Touch activeTouch = Touch.activeFingers[0].currentTouch;
             if (selectionType == ESelectionType.Character)
             {
                 DragCharacter(mousePosition, rayHitDistance);
