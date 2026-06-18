@@ -9,7 +9,7 @@ public class Character : MonoBehaviour
     // Components
     [HideInInspector] public Room currentRoom;
     private NavMeshAgent navMeshAgent;
-    private void Start()
+    private void Awake()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
     }
