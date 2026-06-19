@@ -10,8 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5698236554101793714}
   - component: {fileID: 2266796960056278974}
-  - component: {fileID: 7171417425125317274}
-  - component: {fileID: 9061970323889192389}
   - component: {fileID: 7802547895735839669}
   - component: {fileID: 8072820502438479061}
   m_Layer: 6
@@ -29,13 +27,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1131716803056407867}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.48, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7648979208267535190}
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2266796960056278974
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -85,36 +83,12 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 6.4, y: 3.6}
+  m_Size: {x: 2.1333334, y: 1.2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &7171417425125317274
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1131716803056407867}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94759c68e545df0409a05013d3cc05ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &9061970323889192389
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1131716803056407867}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b118a9758f336bd4090f81d12da9521c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!95 &7802547895735839669
 Animator:
   serializedVersion: 7
@@ -128,7 +102,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: c2040cf8135572c4f8ab82a22a20e639, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_AnimatePhysics: 0
@@ -193,7 +167,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 4092057586590713755}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 1
+  m_Radius: 0.9
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50

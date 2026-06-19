@@ -1,0 +1,5 @@
+using UnityEngine;
+
+public enum EResourceType  {Rats, Nutrition, Wood, Stone, Metal, Plague }
+public enum ERoomType { ResourceRoomWood, ResourceRoomMetal, ResourceRoomStone, NutritionRoom, BedRoom}
+public enum ESelectionType { None, Character, Room }

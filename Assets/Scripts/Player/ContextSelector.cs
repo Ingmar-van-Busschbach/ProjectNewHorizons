@@ -3,6 +3,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.EnhancedTouch;
+using UnityEngine.UIElements;
 using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 
@@ -19,12 +20,14 @@ public class ContextSelector : MonoBehaviour
     [SerializeField] private SpriteRenderer draggedObjectPrefab;
     [SerializeField] private Transform bottomLeftBounds;
     [SerializeField] private Transform topRightBounds;
+    [SerializeField] private RectTransform unlockMenu;
 
     [Header("Settings")]
     [Tooltip("The offset for the drag highlight. Should be a positive numner between 0 and 5.")]
     [SerializeField] private float dragDistanceOffset = 1;
     [Tooltip("Camera drag speed when touching the screen.")]
     [SerializeField] private float cameraDragSpeed = 0.010f;
+    [SerializeField] private float menuAnimationSpeed = 100;
 
     // Internal Parameters
     private ESelectionType selectionType;
@@ -35,7 +38,7 @@ public class ContextSelector : MonoBehaviour
     private GameObject selectedObject;
     private SpriteRenderer draggedObject;
     private Camera playerCamera;
-
+    private Coroutine unlockMenuAnimation;
 
     private void Awake()
     {
@@ -63,23 +66,19 @@ public class ContextSelector : MonoBehaviour
                 switch (hit.collider.gameObject.layer)
                 {
                     case 3: // Room layer
-                        selectionType = ESelectionType.Room;
-                        selectedObject = hit.collider.gameObject;
+                        SelectRoom(hit);
                         break;
                     case 6: // Character layer
-                        selectionType = ESelectionType.Character;
-                        selectedObject = hit.collider.gameObject;
+                        SelectCharacter(hit);
                         break;
                     default:
-                        selectionType = ESelectionType.None;
-                        selectedObject = null;
+                        Deselect();
                         break;
                 }
             }
             else // Fallback to not selecting anything if no object was hit with the raycast.
             {
-                selectionType = ESelectionType.None; 
-                selectedObject = null;
+                Deselect();
             }
         }
 
@@ -96,7 +95,6 @@ public class ContextSelector : MonoBehaviour
         // On click/touch continuous
         if (isHeld)
         {
-            Touch activeTouch = Touch.activeFingers[0].currentTouch;
             if (selectionType == ESelectionType.Character)
             {
                 DragCharacter(mousePosition, rayHitDistance);
@@ -107,7 +105,50 @@ public class ContextSelector : MonoBehaviour
             }
         }
     }
-
+    private void SelectCharacter(RaycastHit hit)
+    {
+        selectionType = ESelectionType.Character;
+        selectedObject = hit.collider.gameObject;
+    }
+    private void SelectRoom(RaycastHit hit)
+    {
+        selectionType = ESelectionType.Room;
+        selectedObject = hit.collider.gameObject;
+        if(selectedObject.TryGetComponent(out Room room))
+        {
+            if (!room.unlockedRoom)
+            {
+                if (unlockMenuAnimation != null)
+                {
+                    StopCoroutine(unlockMenuAnimation);
+                }
+                unlockMenuAnimation = StartCoroutine(AnimateUnlockMenu(new Vector2(0, 50)));
+                if(unlockMenu.TryGetComponent(out UnlockMenuHandler unlockMenuHandler))
+                {
+                    unlockMenuHandler.SetRoomToUnlock(room);
+                }
+            }
+        }
+        
+    }
+    private void Deselect()
+    {
+        selectionType = ESelectionType.None;
+        selectedObject = null;
+        if (unlockMenuAnimation != null)
+        {
+            StopCoroutine(unlockMenuAnimation);
+        }
+        unlockMenuAnimation = StartCoroutine(AnimateUnlockMenu(new Vector2(0, -50)));
+    }
+    private IEnumerator AnimateUnlockMenu(Vector2 position)
+    {
+        while (Vector3.Distance(unlockMenu.anchoredPosition, position) > 0)
+        {
+            unlockMenu.anchoredPosition = Vector3.MoveTowards(unlockMenu.anchoredPosition, position, menuAnimationSpeed * Time.fixedDeltaTime);
+            yield return new WaitForFixedUpdate();
+        }
+    }
     private void CameraMove()
     {
         Vector2 mouseDelta = pointerDeltaInput.action.ReadValue<Vector2>();
@@ -137,7 +178,7 @@ public class ContextSelector : MonoBehaviour
     private void StartDraggingCharacter(Vector3 location)
     {
         draggedObject = Instantiate(draggedObjectPrefab, location, Quaternion.identity);
-        draggedObject.flipX = Vector3.Dot(selectedObject.transform.right, Vector3.right) < 0;
+        //draggedObject.flipX = Vector3.Dot(selectedObject.transform.right, Vector3.right) < 0;
     }
     private void ReleaseCharacter(Vector2 mousePosition)
     {
@@ -150,16 +191,15 @@ public class ContextSelector : MonoBehaviour
             {
                 if(selectedObject.TryGetComponent(out Character character))
                 {
-                    if (character.currentRoom != null)
-                    {
-                        character.currentRoom.UnassignCharacter(character);
-                    }
+                    Room oldRoom = character.currentRoom;
                     Transform location = room.AssignCharacter(character);
                     character.MoveToLocation(location);
+                    if (oldRoom != null && location != character.gameObject.transform)
+                    {
+                        oldRoom.UnassignCharacter(character);
+                    }
                 }
             }
         }
     }
 }
-
-public enum ESelectionType { None, Character, Room }

@@ -1,5 +1,8 @@
 using System.Collections;
+using TMPro;
+using UnityEditor.UIElements;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ResourceManager : MonoBehaviour
 {
@@ -17,10 +20,19 @@ public class ResourceManager : MonoBehaviour
     [Tooltip("amount nutrition drained per rat per day")]
     [SerializeField] private int nutritionDrain;
 
-    private int nutrition;
-    private int stone;
-    private int wood;
-    private int metal;
+    [Header("UI")]
+    [SerializeField] TMP_Text ratCounter;
+    [SerializeField] TMP_Text nutritionCounter;
+    [SerializeField] TMP_Text woodCounter;
+    [SerializeField] TMP_Text stoneCounter;
+    [SerializeField] TMP_Text metalCounter;
+    [SerializeField] Slider plagueSlider;
+
+    public int nutrition;
+    public int stone;
+    public int wood;
+    public int metal;
+    public int plague;
 
     private void Awake()
     {
@@ -36,6 +48,7 @@ public class ResourceManager : MonoBehaviour
     private void Start()
     {
         nutrition = NutritionStarter;
+        nutritionCounter.text = nutrition.ToString();
         StartCoroutine(DayCycle());
     }
 
@@ -57,18 +70,27 @@ public class ResourceManager : MonoBehaviour
         {
             case EResourceType.Rats:
                 rats += amount;
+                ratCounter.text = rats.ToString();
                 break;
             case EResourceType.Nutrition:
                 nutrition += amount;
+                nutritionCounter.text = nutrition.ToString();
                 break;
             case EResourceType.Wood: 
                 wood += amount;
+                woodCounter.text = wood.ToString();
                 break;
             case EResourceType.Stone:
-                stone += amount; 
+                stone += amount;
+                stoneCounter.text = stone.ToString();
                 break;
             case EResourceType.Metal:
                 metal += amount;
+                metalCounter.text = metal.ToString();
+                break;
+            case EResourceType.Plague:
+                plague += amount;
+                plagueSlider.value = plague; 
                 break;
         }
     }

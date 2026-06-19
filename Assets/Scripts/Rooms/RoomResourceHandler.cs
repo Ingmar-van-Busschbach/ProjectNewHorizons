@@ -16,15 +16,22 @@ public class RoomResourceHandler : Room
     [SerializeField] private int stoneAmount;
     [SerializeField] private int metalAmount;
 
+    private float currentTime;
+
     private void Start()
     {
         StartCoroutine(ResourceHandler());
     }
     private IEnumerator ResourceHandler()
     {
-        yield return new WaitForSeconds(timeToProduce);
+        collectButton.gameObject.SetActive(false);
+        currentTime = timeToProduce;
+        while(currentTime > 0)
+        {
+            yield return new WaitForSeconds(0.1f);
+            currentTime -= 0.1f * characterIndex.Count;
+        }
         collectButton.gameObject.SetActive(true);
-        StartCoroutine(ResourceHandler());
     }
 
     public void AddResources()
@@ -44,6 +51,7 @@ public class RoomResourceHandler : Room
                 ResourceManager.instance.ResourceHandler(EResourceType.Metal, metalAmount);
                 break; 
         }
+        StartCoroutine(ResourceHandler());
     }
 
 
