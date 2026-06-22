@@ -20,10 +20,11 @@ public class PlagueSpreadRoom : Room
     Character ratThatLeaves;
 
 
-    Transform leaveLocation;
+    [SerializeField] private Transform leaveLocation;
 
     public override Transform AssignCharacter(Character character)
     {
+        Debug.Log("character assigned");
         if (unlockedRoom)
         {
             for (int i = 0; i < characterLocations.Count; i++)
@@ -41,6 +42,7 @@ public class PlagueSpreadRoom : Room
     }
     IEnumerator ratLeave()
     {
+        Debug.Log("leave initiated");
         //if rat is infected
         ratThatLeaves.MoveToLocation(leaveLocation);
         int plagueAmount = Random.Range(minPlague, maxPlague);
@@ -48,6 +50,8 @@ public class PlagueSpreadRoom : Room
         yield return new WaitForSeconds(returnTime);
 
         ResourceManager.instance.ResourceHandler(EResourceType.Plague, plagueAmount);
+
+        Debug.Log("rat came back :D");
 
         for (int i = 0; i < characterLocations.Count; i++)
         {
