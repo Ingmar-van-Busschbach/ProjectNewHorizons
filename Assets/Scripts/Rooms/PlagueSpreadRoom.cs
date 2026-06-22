@@ -6,8 +6,8 @@ using UnityEngine.TextCore.Text;
 public class PlagueSpreadRoom : Room
 {
     [Header("Leave Handler")]
-    [Tooltip("amount the plague goes up per rat send out")]
-    [SerializeField] private float plagueSpread;
+    [Tooltip("percentage that dies")]
+    [SerializeField] private float ratDeathRate = 20;
     [Tooltip("min amount it takes for a rat to return")]
     [SerializeField] private float minReturnTime;
     [Tooltip("max amount it takes for a rat to return")]
@@ -24,7 +24,6 @@ public class PlagueSpreadRoom : Room
 
     public override Transform AssignCharacter(Character character)
     {
-        Debug.Log("character assigned");
         if (unlockedRoom)
         {
             for (int i = 0; i < characterLocations.Count; i++)
@@ -33,6 +32,7 @@ public class PlagueSpreadRoom : Room
                 {
                     characterIndex.Add(character, i);
                     character.currentRoom = this;
+                    ratThatLeaves = character;
                     StartCoroutine(ratLeave());
                     return characterLocations[i];
                 }
@@ -42,23 +42,31 @@ public class PlagueSpreadRoom : Room
     }
     IEnumerator ratLeave()
     {
-        Debug.Log("leave initiated");
         //if rat is infected
         ratThatLeaves.MoveToLocation(leaveLocation);
         int plagueAmount = Random.Range(minPlague, maxPlague);
         float returnTime = Random.Range(minReturnTime, maxReturnTime);
         yield return new WaitForSeconds(returnTime);
-
-        ResourceManager.instance.ResourceHandler(EResourceType.Plague, plagueAmount);
-
-        Debug.Log("rat came back :D");
-
-        for (int i = 0; i < characterLocations.Count; i++)
+        float random = Random.Range(0, 100);
+        Debug.Log(random);
+        if (random > ratDeathRate)
         {
-            if (!characterIndex.Values.Contains(i))
+            ResourceManager.instance.ResourceHandler(EResourceType.Plague, plagueAmount);
+            Debug.Log("plague added, amount: " +  plagueAmount);
+            for (int i = 0; i < characterLocations.Count; i++)
             {
-                ratThatLeaves.MoveToLocation(characterLocations[i]);
+                if (!characterIndex.Values.Contains(i))
+                {
+                    ratThatLeaves.MoveToLocation(characterLocations[i]);
+                }
             }
+        }
+        else
+        {
+            Debug.Log("rat died");
+            UnassignCharacter(ratThatLeaves);
+            Destroy(ratThatLeaves.gameObject);
+            ResourceManager.instance.ResourceHandler(EResourceType.Rats, -1);
         }
 
     }
