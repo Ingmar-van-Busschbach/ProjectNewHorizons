@@ -29,7 +29,21 @@ public class RoomResourceHandler : Room
         while(currentTime > 0)
         {
             yield return new WaitForSeconds(0.1f);
-            currentTime -= 0.1f * characterIndex.Count;
+            float averageStat = 0;
+            foreach(Character character in characterIndex.Keys)
+            {
+                averageStat += character.GetRecourcefulness();
+            }
+            if(characterIndex.Count > 0)
+            {
+                averageStat = averageStat / characterIndex.Count;
+            }
+            else
+            {
+                averageStat = 1;
+            }
+            Debug.Log(averageStat);
+            currentTime -= 0.1f * characterIndex.Count * averageStat;
         }
         collectButton.gameObject.SetActive(true);
     }
