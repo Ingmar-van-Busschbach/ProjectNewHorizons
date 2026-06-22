@@ -14,25 +14,30 @@ public class ContextSelector : MonoBehaviour
     [SerializeField] private InputActionReference clickInput;
     [SerializeField] private InputActionReference pointerPositionInput;
     [SerializeField] private InputActionReference pointerDeltaInput;
+    [SerializeField] private InputActionReference mouseScrollInput;
 
     [Header("Core Configuration - Do not touch")]
     [SerializeField] private LayerMask layerMask;
     [SerializeField] private SpriteRenderer draggedObjectPrefab;
     [SerializeField] private Transform bottomLeftBounds;
     [SerializeField] private Transform topRightBounds;
+    [SerializeField] private Vector2 zoomBounds;
     [SerializeField] private RectTransform unlockMenu;
 
     [Header("Settings")]
     [Tooltip("The offset for the drag highlight. Should be a positive numner between 0 and 5.")]
     [SerializeField] private float dragDistanceOffset = 1;
     [Tooltip("Camera drag speed when touching the screen.")]
-    [SerializeField] private float cameraDragSpeed = 0.010f;
+    [SerializeField] private float cameraDragSpeed = 0.01f;
+    [SerializeField] private float touchZoomSpeed = 0.01f;
+    [SerializeField] private float mouseZoomSpeed = 0.5f;
     [SerializeField] private float menuAnimationSpeed = 100;
 
     // Internal Parameters
     private ESelectionType selectionType;
     private float rayHitDistance;
     private bool isHeld;
+    private float lastMultiTouchDistance;
 
     // Components
     private GameObject selectedObject;
@@ -54,7 +59,7 @@ public class ContextSelector : MonoBehaviour
         Vector2 mousePosition = pointerPositionInput.action.ReadValue<Vector2>();
 
         // On click/touch start
-        if (clickInput.action.WasPressedThisFrame() || (Touch.activeFingers.Count == 1 && !isHeld))
+        if ((clickInput.action.WasPressedThisFrame() || Touch.activeFingers.Count == 1) && !isHeld)
         {
             isHeld = true;
 
@@ -83,7 +88,7 @@ public class ContextSelector : MonoBehaviour
         }
 
         // On click/touch end
-        else if (clickInput.action.WasReleasedThisFrame() || (Touch.activeFingers.Count == 0 && isHeld))
+        else if ((clickInput.action.WasReleasedThisFrame() || Touch.activeFingers.Count == 0) && isHeld)
         {
             isHeld = false;
             if(selectionType == ESelectionType.Character)
@@ -103,6 +108,16 @@ public class ContextSelector : MonoBehaviour
             {
                 CameraMove();
             }
+        }
+        
+        float mouseScroll = mouseScrollInput.action.ReadValue<float>();
+        if (mouseScroll != 0)
+        {
+            transform.localPosition = new Vector3(
+                transform.localPosition.x,
+                transform.localPosition.y,
+                Mathf.Clamp(transform.localPosition.z + mouseScroll * mouseZoomSpeed, zoomBounds.x, zoomBounds.y)
+                );
         }
     }
     private void SelectCharacter(RaycastHit hit)
@@ -151,13 +166,38 @@ public class ContextSelector : MonoBehaviour
     }
     private void CameraMove()
     {
-        Vector2 mouseDelta = pointerDeltaInput.action.ReadValue<Vector2>();
-        mouseDelta *= cameraDragSpeed;
-        transform.position = new Vector3(
-            Mathf.Clamp(transform.position.x - mouseDelta.x, bottomLeftBounds.position.x, topRightBounds.position.x),
-            Mathf.Clamp(transform.position.y - mouseDelta.y, bottomLeftBounds.position.y, topRightBounds.position.y),
-            transform.position.z
-            );
+        if(Touch.activeFingers.Count == 2)
+        {
+            Touch firstTouch = Touch.activeTouches[0];
+            Touch secondTouch = Touch.activeTouches[1];
+            if (firstTouch.phase == TouchPhase.Began || secondTouch.phase == TouchPhase.Began)
+            {
+                lastMultiTouchDistance = Vector2.Distance(firstTouch.screenPosition, secondTouch.screenPosition);
+            }
+            if (firstTouch.phase != TouchPhase.Moved || secondTouch.phase != TouchPhase.Moved)
+            {
+                return;
+            }
+            float newMultiTouchDistance = Vector2.Distance(firstTouch.screenPosition, secondTouch.screenPosition);
+
+            transform.localPosition = new Vector3(
+                transform.localPosition.x,
+                transform.localPosition.y,
+                Mathf.Clamp(transform.localPosition.z + (newMultiTouchDistance - lastMultiTouchDistance) * touchZoomSpeed, zoomBounds.x, zoomBounds.y)
+                );
+
+            lastMultiTouchDistance = newMultiTouchDistance;
+        }
+        else
+        {
+            Vector2 mouseDelta = pointerDeltaInput.action.ReadValue<Vector2>();
+            mouseDelta *= cameraDragSpeed;
+            transform.position = new Vector3(
+                Mathf.Clamp(transform.position.x - mouseDelta.x, bottomLeftBounds.position.x, topRightBounds.position.x),
+                Mathf.Clamp(transform.position.y - mouseDelta.y, bottomLeftBounds.position.y, topRightBounds.position.y),
+                transform.position.z
+                );
+        }
     }
 
     private void DragCharacter(Vector2 mousePosition, float distance)
@@ -194,9 +234,16 @@ public class ContextSelector : MonoBehaviour
                     Room oldRoom = character.currentRoom;
                     Transform location = room.AssignCharacter(character);
                     character.MoveToLocation(location);
-                    if (oldRoom != null && location != character.gameObject.transform)
+                    if(location != character.gameObject.transform)
                     {
-                        oldRoom.UnassignCharacter(character);
+                        if (character.gameObject.transform.GetChild(0).TryGetComponent(out RatHats ratHats))
+                        {
+                            ratHats.AssignHat(room);
+                        }
+                        if (oldRoom != null)
+                        {
+                            oldRoom.UnassignCharacter(character);
+                        }
                     }
                 }
             }
