@@ -2849,6 +2849,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1990800355}
     - target: {fileID: 1392089246764442769, guid: aeac6b25f9b24ad4595fbfd654f782d1, type: 3}
+      propertyPath: zoomBounds.x
+      value: -20
+      objectReference: {fileID: 0}
+    - target: {fileID: 1392089246764442769, guid: aeac6b25f9b24ad4595fbfd654f782d1, type: 3}
+      propertyPath: zoomBounds.y
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1392089246764442769, guid: aeac6b25f9b24ad4595fbfd654f782d1, type: 3}
       propertyPath: pointerDeltaInput
       value: 
       objectReference: {fileID: 1868464671}
@@ -4891,7 +4899,7 @@ PrefabInstance:
     - target: {fileID: 4231335830192347951, guid: 413f901370fc68e41ae385d3bc3a9cd6, type: 3}
       propertyPath: ratHat
       value: 
-      objectReference: {fileID: 21300000, guid: ce96a92aecf095f41b85bc0666a43337, type: 3}
+      objectReference: {fileID: 21300000, guid: 55397bd31c1bba74ab3367f478717ce5, type: 3}
     - target: {fileID: 4231335830192347951, guid: 413f901370fc68e41ae385d3bc3a9cd6, type: 3}
       propertyPath: roomName
       value: Nutrition Room

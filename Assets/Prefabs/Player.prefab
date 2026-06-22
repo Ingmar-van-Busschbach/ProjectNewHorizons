@@ -190,9 +190,11 @@ MonoBehaviour:
   draggedObjectPrefab: {fileID: 8325694758835055321, guid: 625167c9094e255489d8ad53dab69bcd, type: 3}
   bottomLeftBounds: {fileID: 5792804884207744616}
   topRightBounds: {fileID: 5732855943325558644}
+  zoomBounds: {x: -20, y: -5}
   unlockMenu: {fileID: 0}
   dragDistanceOffset: 0.5
   cameraDragSpeed: 0.01
+  zoomSpeed: 0.01
   menuAnimationSpeed: 100
 --- !u!1 &5253339291096677594
 GameObject:
