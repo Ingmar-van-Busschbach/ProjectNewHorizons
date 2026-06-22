@@ -11,6 +11,7 @@ public class Room : MonoBehaviour
     public int woodToUnlock;
     public int stoneToUnlock;
     public int metalToUnlock;
+    public Sprite ratHat;
 
     public Transform AssignCharacter(Character character)
     {
