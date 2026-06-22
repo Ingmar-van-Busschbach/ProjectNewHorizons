@@ -181,6 +181,20 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8000926564335582891, guid: 096d94eb186b6e0458c3a0805baaefce, type: 3}
   m_PrefabInstance: {fileID: 16794673}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &17150622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
+  m_Name: Player/MouseScroll
+  m_EditorClassIdentifier: 
+  m_Asset: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  m_ActionId: 862e2899-c1c8-470c-b41c-34f3563c76e8
 --- !u!1001 &23374765
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2736,6 +2750,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1990800355}
     - target: {fileID: 1392089246764442769, guid: aeac6b25f9b24ad4595fbfd654f782d1, type: 3}
+      propertyPath: mouseScrollInput
+      value: 
+      objectReference: {fileID: 17150622}
+    - target: {fileID: 1392089246764442769, guid: aeac6b25f9b24ad4595fbfd654f782d1, type: 3}
       propertyPath: pointerDeltaInput
       value: 
       objectReference: {fileID: 1868464671}
@@ -4996,6 +5014,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6631720333473854156, guid: 57997736d85e80648ab2ded5e8b16994, type: 3}
+      propertyPath: rats
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6631720333473854156, guid: 57997736d85e80648ab2ded5e8b16994, type: 3}
       propertyPath: nutrition
       value: 0
       objectReference: {fileID: 0}
@@ -5058,6 +5080,12 @@ PrefabInstance:
     - target: {fileID: 7587414712044201164, guid: 57997736d85e80648ab2ded5e8b16994, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -24
+      objectReference: {fileID: 0}
+    - target: {fileID: 8096318372282386459, guid: 57997736d85e80648ab2ded5e8b16994, type: 3}
+      propertyPath: m_text
+      value: '
+
+'
       objectReference: {fileID: 0}
     - target: {fileID: 8156233681234973180, guid: 57997736d85e80648ab2ded5e8b16994, type: 3}
       propertyPath: m_AnchorMax.x
