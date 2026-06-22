@@ -1,26 +1,62 @@
 using System.Collections;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Rendering;
 
 [RequireComponent(typeof(NavMeshAgent))]
 public class Character : MonoBehaviour
 {
     [SerializeField] private float idleRotationSpeed = 5;
+    [SerializeField] private StatPlugs statPlugs;
+    [SerializeField] private Stat stats;
+
     // Components
     [HideInInspector] public Room currentRoom;
     private NavMeshAgent navMeshAgent;
-    private void Awake()
-    {
-        navMeshAgent = GetComponent<NavMeshAgent>();
-    }
 
     public void MoveToLocation(Transform location)
     {
         navMeshAgent.SetDestination(location.position);
     }
 
+    public float GetRecourcefulness()
+    {
+        return (float)stats.recourcefulness / (statPlugs.MaxStats().recourcefulness / 2);
+    }
+
+    public float GetAthletics()
+    {
+        return (float)stats.athletics / (statPlugs.MaxStats().athletics / 2);
+    }
+
+    public float GetTempo()
+    {
+        return (float)stats.tempo / (statPlugs.MaxStats().tempo / 2);
+    }
+
+    public float GetSmarts()
+    {
+        return (float)stats.smarts / (statPlugs.MaxStats().smarts / 2);
+    }
+
+    private void Awake()
+    {
+        navMeshAgent = GetComponent<NavMeshAgent>();
+    }
+
+    private void Start()
+    {
+        stats = statPlugs.GenerateStats();
+        navMeshAgent.speed *= GetTempo();
+    }
+
     private void Update()
     {
+        if (navMeshAgent == null)
+        {
+            return;
+        }
         if (!navMeshAgent.pathPending)
         {
             // Check if the remaining distance is within the stopping distance

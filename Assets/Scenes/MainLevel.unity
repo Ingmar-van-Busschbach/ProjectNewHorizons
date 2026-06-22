@@ -2492,6 +2492,20 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2270387194480931583, guid: 5e6faa339d6d73b4794ce616e28d7aeb, type: 3}
   m_PrefabInstance: {fileID: 1079073157}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1149798516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
+  m_Name: Player/MouseScroll
+  m_EditorClassIdentifier: 
+  m_Asset: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  m_ActionId: 862e2899-c1c8-470c-b41c-34f3563c76e8
 --- !u!1001 &1152281774
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2848,6 +2862,10 @@ PrefabInstance:
       propertyPath: unlockMenu
       value: 
       objectReference: {fileID: 1990800355}
+    - target: {fileID: 1392089246764442769, guid: aeac6b25f9b24ad4595fbfd654f782d1, type: 3}
+      propertyPath: mouseScrollInput
+      value: 
+      objectReference: {fileID: 1149798516}
     - target: {fileID: 1392089246764442769, guid: aeac6b25f9b24ad4595fbfd654f782d1, type: 3}
       propertyPath: pointerDeltaInput
       value: 

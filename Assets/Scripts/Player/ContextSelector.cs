@@ -1,9 +1,7 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.EnhancedTouch;
-using UnityEngine.UIElements;
 using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 
@@ -14,6 +12,7 @@ public class ContextSelector : MonoBehaviour
     [SerializeField] private InputActionReference clickInput;
     [SerializeField] private InputActionReference pointerPositionInput;
     [SerializeField] private InputActionReference pointerDeltaInput;
+    [SerializeField] private InputActionReference mouseScrollInput;
 
     [Header("Core Configuration - Do not touch")]
     [SerializeField] private LayerMask layerMask;
@@ -28,7 +27,8 @@ public class ContextSelector : MonoBehaviour
     [SerializeField] private float dragDistanceOffset = 1;
     [Tooltip("Camera drag speed when touching the screen.")]
     [SerializeField] private float cameraDragSpeed = 0.01f;
-    [SerializeField] private float zoomSpeed = 0.01f;
+    [SerializeField] private float touchZoomSpeed = 0.01f;
+    [SerializeField] private float mouseZoomSpeed = 0.5f;
     [SerializeField] private float menuAnimationSpeed = 100;
 
     // Internal Parameters
@@ -43,10 +43,12 @@ public class ContextSelector : MonoBehaviour
     private Camera playerCamera;
     private Coroutine unlockMenuAnimation;
 
+    #if UNITY_WEBGL
     private void Awake()
     {
         EnhancedTouchSupport.Enable();
     }
+    #endif
     private void Start()
     {
         playerCamera = GetComponent<Camera>();
@@ -56,8 +58,9 @@ public class ContextSelector : MonoBehaviour
     {
         Vector2 mousePosition = pointerPositionInput.action.ReadValue<Vector2>();
 
+        #if UNITY_EDITOR
         // On click/touch start
-        if (clickInput.action.WasPressedThisFrame() || (Touch.activeFingers.Count == 1 && !isHeld))
+        if (clickInput.action.WasPressedThisFrame())
         {
             isHeld = true;
 
@@ -86,7 +89,7 @@ public class ContextSelector : MonoBehaviour
         }
 
         // On click/touch end
-        else if (clickInput.action.WasReleasedThisFrame() || (Touch.activeFingers.Count == 0 && isHeld))
+        else if (clickInput.action.WasReleasedThisFrame())
         {
             isHeld = false;
             if(selectionType == ESelectionType.Character)
@@ -94,7 +97,45 @@ public class ContextSelector : MonoBehaviour
                 ReleaseCharacter(mousePosition);
             }
         }
+        #elif UNITY_WEBGL
+        if (Touch.activeFingers.Count == 1 && !isHeld)
+        {
+            isHeld = true;
 
+            Ray ray = playerCamera.ScreenPointToRay(mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
+            {
+                rayHitDistance = hit.distance - dragDistanceOffset; // Distance at which the highlight object will be placed during the drag event.
+                switch (hit.collider.gameObject.layer)
+                {
+                    case 3: // Room layer
+                        SelectRoom(hit);
+                        break;
+                    case 6: // Character layer
+                        SelectCharacter(hit);
+                        break;
+                    default:
+                        Deselect();
+                        break;
+                }
+            }
+            else // Fallback to not selecting anything if no object was hit with the raycast.
+            {
+                Deselect();
+            }
+        }
+
+        // On click/touch end
+        else if (Touch.activeFingers.Count == 0 && isHeld)
+        {
+            isHeld = false;
+            if (selectionType == ESelectionType.Character)
+            {
+                ReleaseCharacter(mousePosition);
+            }
+        }
+        #endif
         // On click/touch continuous
         if (isHeld)
         {
@@ -107,8 +148,16 @@ public class ContextSelector : MonoBehaviour
                 CameraMove();
             }
         }
-
-
+        
+        float mouseScroll = mouseScrollInput.action.ReadValue<float>();
+        if (mouseScroll != 0)
+        {
+            transform.localPosition = new Vector3(
+                transform.localPosition.x,
+                transform.localPosition.y,
+                Mathf.Clamp(transform.localPosition.z + mouseScroll * mouseZoomSpeed, zoomBounds.x, zoomBounds.y)
+                );
+        }
     }
     private void SelectCharacter(RaycastHit hit)
     {
@@ -156,17 +205,7 @@ public class ContextSelector : MonoBehaviour
     }
     private void CameraMove()
     {
-        if(Touch.activeFingers.Count == 1)
-        {
-            Vector2 mouseDelta = pointerDeltaInput.action.ReadValue<Vector2>();
-            mouseDelta *= cameraDragSpeed;
-            transform.position = new Vector3(
-                Mathf.Clamp(transform.position.x - mouseDelta.x, bottomLeftBounds.position.x, topRightBounds.position.x),
-                Mathf.Clamp(transform.position.y - mouseDelta.y, bottomLeftBounds.position.y, topRightBounds.position.y),
-                transform.position.z
-                );
-        }
-        else if(Touch.activeFingers.Count == 2)
+        if(Touch.activeFingers.Count == 2)
         {
             Touch firstTouch = Touch.activeTouches[0];
             Touch secondTouch = Touch.activeTouches[1];
@@ -183,10 +222,20 @@ public class ContextSelector : MonoBehaviour
             transform.localPosition = new Vector3(
                 transform.localPosition.x,
                 transform.localPosition.y,
-                Mathf.Clamp(transform.localPosition.z + (newMultiTouchDistance - lastMultiTouchDistance) * zoomSpeed, zoomBounds.x, zoomBounds.y)
+                Mathf.Clamp(transform.localPosition.z + (newMultiTouchDistance - lastMultiTouchDistance) * touchZoomSpeed, zoomBounds.x, zoomBounds.y)
                 );
 
             lastMultiTouchDistance = newMultiTouchDistance;
+        }
+        else
+        {
+            Vector2 mouseDelta = pointerDeltaInput.action.ReadValue<Vector2>();
+            mouseDelta *= cameraDragSpeed;
+            transform.position = new Vector3(
+                Mathf.Clamp(transform.position.x - mouseDelta.x, bottomLeftBounds.position.x, topRightBounds.position.x),
+                Mathf.Clamp(transform.position.y - mouseDelta.y, bottomLeftBounds.position.y, topRightBounds.position.y),
+                transform.position.z
+                );
         }
     }
 
