@@ -1,4 +1,5 @@
 using System.Collections;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.EnhancedTouch;
@@ -20,7 +21,8 @@ public class ContextSelector : MonoBehaviour
     [SerializeField] private Transform bottomLeftBounds;
     [SerializeField] private Transform topRightBounds;
     [SerializeField] private Vector2 zoomBounds;
-    [SerializeField] private RectTransform unlockMenu;
+    [SerializeField] private RectTransform roomUnlockMenu;
+    [SerializeField] private RectTransform ratInfoMenu;
 
     [Header("Settings")]
     [Tooltip("The offset for the drag highlight. Should be a positive numner between 0 and 5.")]
@@ -29,19 +31,22 @@ public class ContextSelector : MonoBehaviour
     [SerializeField] private float cameraDragSpeed = 0.01f;
     [SerializeField] private float touchZoomSpeed = 0.01f;
     [SerializeField] private float mouseZoomSpeed = 0.5f;
-    [SerializeField] private float menuAnimationSpeed = 100;
+    [SerializeField] private float menuAnimationSpeed = 0.5f;
 
     // Internal Parameters
     private ESelectionType selectionType;
     private float rayHitDistance;
     private bool isHeld;
     private float lastMultiTouchDistance;
+    private Vector2 roomUnlockMenuPosition;
+    private Vector2 ratInfoMenuPosition;
 
     // Components
     private GameObject selectedObject;
     private SpriteRenderer draggedObject;
     private Camera playerCamera;
-    private Coroutine unlockMenuAnimation;
+    private Coroutine roomUnlockMenuAnimation;
+    private Coroutine ratInfoMenuAnimation;
 
     #if UNITY_WEBGL
     private void Awake()
@@ -52,6 +57,8 @@ public class ContextSelector : MonoBehaviour
     private void Start()
     {
         playerCamera = GetComponent<Camera>();
+        roomUnlockMenuPosition = roomUnlockMenu.anchoredPosition;
+        ratInfoMenuPosition = ratInfoMenu.anchoredPosition;
     }
 
     private void Update()
@@ -163,6 +170,23 @@ public class ContextSelector : MonoBehaviour
     {
         selectionType = ESelectionType.Character;
         selectedObject = hit.collider.gameObject;
+        if (selectedObject.TryGetComponent(out Character character))
+        {
+            if (roomUnlockMenuAnimation != null)
+            {
+                StopCoroutine(roomUnlockMenuAnimation);
+            }
+            roomUnlockMenuAnimation = StartCoroutine(AnimateMenu(roomUnlockMenu, roomUnlockMenuPosition));
+            if (ratInfoMenuAnimation != null)
+            {
+                StopCoroutine(ratInfoMenuAnimation);
+            }
+            ratInfoMenuAnimation = StartCoroutine(AnimateMenu(ratInfoMenu, ratInfoMenuPosition * new Vector2(-1, 1)));
+            if(ratInfoMenu.TryGetComponent(out RatStatDisplay ratStatDisplay))
+            {
+                ratStatDisplay.DisplayStats(character.stats, character.statPlugs, character.name);
+            }
+        }
     }
     private void SelectRoom(RaycastHit hit)
     {
@@ -170,14 +194,19 @@ public class ContextSelector : MonoBehaviour
         selectedObject = hit.collider.gameObject;
         if(selectedObject.TryGetComponent(out Room room))
         {
+            if (ratInfoMenuAnimation != null)
+            {
+                StopCoroutine(ratInfoMenuAnimation);
+            }
+            ratInfoMenuAnimation = StartCoroutine(AnimateMenu(ratInfoMenu, ratInfoMenuPosition));
             if (!room.unlockedRoom)
             {
-                if (unlockMenuAnimation != null)
+                if (roomUnlockMenuAnimation != null)
                 {
-                    StopCoroutine(unlockMenuAnimation);
+                    StopCoroutine(roomUnlockMenuAnimation);
                 }
-                unlockMenuAnimation = StartCoroutine(AnimateUnlockMenu(new Vector2(0, 50)));
-                if(unlockMenu.TryGetComponent(out UnlockMenuHandler unlockMenuHandler))
+                roomUnlockMenuAnimation = StartCoroutine(AnimateMenu(roomUnlockMenu, roomUnlockMenuPosition * new Vector2(1, -1)));
+                if (roomUnlockMenu.TryGetComponent(out UnlockMenuHandler unlockMenuHandler))
                 {
                     unlockMenuHandler.SetRoomToUnlock(room);
                 }
@@ -189,17 +218,23 @@ public class ContextSelector : MonoBehaviour
     {
         selectionType = ESelectionType.None;
         selectedObject = null;
-        if (unlockMenuAnimation != null)
+        if (roomUnlockMenuAnimation != null)
         {
-            StopCoroutine(unlockMenuAnimation);
+            StopCoroutine(roomUnlockMenuAnimation);
         }
-        unlockMenuAnimation = StartCoroutine(AnimateUnlockMenu(new Vector2(0, -50)));
-    }
-    private IEnumerator AnimateUnlockMenu(Vector2 position)
-    {
-        while (Vector3.Distance(unlockMenu.anchoredPosition, position) > 0)
+        roomUnlockMenuAnimation = StartCoroutine(AnimateMenu(roomUnlockMenu, roomUnlockMenuPosition));
+        if (ratInfoMenuAnimation != null)
         {
-            unlockMenu.anchoredPosition = Vector3.MoveTowards(unlockMenu.anchoredPosition, position, menuAnimationSpeed * Time.fixedDeltaTime);
+            StopCoroutine(ratInfoMenuAnimation);
+        }
+        ratInfoMenuAnimation = StartCoroutine(AnimateMenu(ratInfoMenu, ratInfoMenuPosition));
+    }
+    private IEnumerator AnimateMenu(RectTransform menu, Vector2 position)
+    {
+        float distance = Vector3.Distance(menu.anchoredPosition, position);
+        while (Vector3.Distance(menu.anchoredPosition, position) > 0)
+        {
+            menu.anchoredPosition = Vector3.MoveTowards(menu.anchoredPosition, position, menuAnimationSpeed * distance * Time.fixedDeltaTime);
             yield return new WaitForFixedUpdate();
         }
     }

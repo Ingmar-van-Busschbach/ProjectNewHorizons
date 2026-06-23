@@ -184,6 +184,7 @@ MonoBehaviour:
   clickInput: {fileID: 0}
   pointerPositionInput: {fileID: 0}
   pointerDeltaInput: {fileID: 0}
+  mouseScrollInput: {fileID: 0}
   layerMask:
     serializedVersion: 2
     m_Bits: 72
@@ -191,11 +192,13 @@ MonoBehaviour:
   bottomLeftBounds: {fileID: 5792804884207744616}
   topRightBounds: {fileID: 5732855943325558644}
   zoomBounds: {x: -20, y: -5}
-  unlockMenu: {fileID: 0}
+  roomUnlockMenu: {fileID: 0}
+  ratInfoMenu: {fileID: 0}
   dragDistanceOffset: 0.5
   cameraDragSpeed: 0.01
-  zoomSpeed: 0.01
-  menuAnimationSpeed: 100
+  touchZoomSpeed: 0.01
+  mouseZoomSpeed: 0.5
+  menuAnimationSpeed: 0.5
 --- !u!1 &5253339291096677594
 GameObject:
   m_ObjectHideFlags: 0

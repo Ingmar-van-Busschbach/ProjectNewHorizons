@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b231ab6803c86b042aae9fa71a827ca9, type: 3}
+  m_Name: UniversalRatNames
+  m_EditorClassIdentifier: 
+  firstNames:
+  - John
+  - Rathanial
+  - Ratinka
+  - Narato
+  - Naratsha
+  - Ratje
+  - Bob
+  - Bratley
+  - Bratney
+  - Ratlexander
+  - Noodles
+  - Rattilton
+  - Egg
+  - Tofu
+  - Bean
+  - Dave
+  - Jeff
+  - Sausage
+  - Soup
+  - Crumb
+  - Julius
+  - Parmesan
+  - Burnt
+  - Hades
+  - Worm
+  - Philip
+  - Cat
+  - Rathy
+  - Murply
+  - Michael
+  - Rattus
+  - Remi
+  - Blueberry
+  surNames:
+  - ' '
+  - ' '
+  - ' '
+  - ' '
+  - ' '
+  - ' '
+  - McRatington
+  - Whitefur
+  - Ratolomew
+  - Rattus
+  - Longtooth
+  - Longtail
+  - Bouillion
+  - Chef
+  - Bigear
+  - Noodle
+  - Raddems
+  - Nosferatu
+  - Cheeser
+  - Rat
+  - the Rat
+  - Toast
+  - Ratson
+  - Jackson
