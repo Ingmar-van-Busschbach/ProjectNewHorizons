@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class Room : MonoBehaviour
 {
+    public AudioSource roomAmbience;
+    [SerializeField] private GameObject roomlight;
     [SerializeField] protected List<Transform> characterLocations = new();
-    [SerializeField] protected Dictionary<Character, int> characterIndex = new();
+    public Dictionary<Character, int> characterIndex = new();
     public bool unlockedRoom;
     public string roomName;
     public int woodToUnlock;
@@ -13,6 +15,19 @@ public class Room : MonoBehaviour
     public int metalToUnlock;
     public Sprite ratHat;
 
+    private void Update()
+    {
+        if (characterIndex.Count > 0)
+        {
+            roomAmbience.gameObject.SetActive(true);
+            roomlight.SetActive(true);
+        }
+        else
+        {
+            roomAmbience.gameObject.SetActive(false);
+            roomlight.SetActive(false);
+        }
+    }
     public virtual Transform AssignCharacter(Character character)
     {
         if (unlockedRoom)

@@ -15,12 +15,18 @@ public class DropDownHandler : MonoBehaviour
         {
             case 0:
                 room.roomType = ERoomType.ResourceRoomWood;
+                room.roomAmbience.clip = room.woodAudioClip;
+                room.roomAmbience.Play();
                 break;
             case 1:
                 room.roomType = ERoomType.ResourceRoomStone;
+                room.roomAmbience.clip = room.stoneAudioClip;
+                room.roomAmbience.Play();
                 break;
             case 2:
                 room.roomType = ERoomType.ResourceRoomMetal;
+                room.roomAmbience.clip = room.metalAudioClip;
+                room.roomAmbience.Play();
                 break;
         }
     
