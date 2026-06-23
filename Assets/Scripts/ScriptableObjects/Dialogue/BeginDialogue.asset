@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2759be2ffdb47645b3cf8b2e32470f6, type: 3}
+  m_Name: BeginDialogue
+  m_EditorClassIdentifier: 
+  dialogue:
+  - speakerName: Wizard
+    dialogue: The druids here are protecting a well of mana. Which we can use to
+      turn you back into a human.
+    printDuration: 0.05
+    dialogueVoice: {fileID: 8300000, guid: 8cb4856ba7c999d42bc77f8ccf3cc367, type: 3}
+  - speakerName: Duck
+    dialogue: But sir we don't-
+    printDuration: 0.05
+    dialogueVoice: {fileID: 8300000, guid: ff4ccac19b987d04596426dcffe397c7, type: 3}
+  - speakerName: Wizard
+    dialogue: "Silence we don\u2019t have time for your babbling, we need to find
+      the well of mana. "
+    printDuration: 0.06
+    dialogueVoice: {fileID: 8300000, guid: 026cb20b10bf12548b9cb3be56b962b6, type: 3}
+  - speakerName: Duck
+    dialogue: But sir-
+    printDuration: 0.05
+    dialogueVoice: {fileID: 8300000, guid: 82ddf16b5866deb45a94e3264261e832, type: 3}
+  - speakerName: Wizard
+    dialogue: We must move onwards for now. Whatever it is you want to tell me can
+      wait.
+    printDuration: 0.07
+    dialogueVoice: {fileID: 8300000, guid: cac7634797e5b224380ac764311dc153, type: 3}
+  endScene: 0
