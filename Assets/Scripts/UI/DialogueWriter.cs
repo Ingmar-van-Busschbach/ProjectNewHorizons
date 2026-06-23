@@ -1,9 +1,11 @@
 using System.Collections;
 using TMPro;
+using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.EnhancedTouch;
+using UnityEngine.SceneManagement;
 using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
 [RequireComponent(typeof(AudioSource))]
@@ -21,6 +23,10 @@ public class DialogueWriter : MonoBehaviour
     private int currentDialogueIndex;
     private Coroutine routine;
     private bool isPressed;
+
+    [Header("tutorial:")]
+    [SerializeField] private DialogueData tutorialDialogue;
+    [SerializeField] private string tutorialSceneName;
 
     private void Awake()
     {
@@ -41,6 +47,13 @@ public class DialogueWriter : MonoBehaviour
         #endif
     }
 
+    private void Start()
+    {
+        if (SceneManager.GetActiveScene().name == tutorialSceneName)
+        { 
+            InitializeDialogue(tutorialDialogue);
+        }
+    }
     private void OnDestroy()
     {
         Instance = null; // This is technically not needed as on scene loading it should automatically delete the Instance reference, but it is a precaution.

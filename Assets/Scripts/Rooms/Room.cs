@@ -12,6 +12,8 @@ public class Room : MonoBehaviour
     public int stoneToUnlock;
     public int metalToUnlock;
     public Sprite ratHat;
+    [Tooltip("dialogue that plays when the room is unlocked")]
+    public DialogueData unlockDialogue;
 
     public virtual Transform AssignCharacter(Character character)
     {

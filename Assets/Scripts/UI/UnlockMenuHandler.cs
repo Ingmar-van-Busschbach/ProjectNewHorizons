@@ -38,5 +38,8 @@ public class UnlockMenuHandler : MonoBehaviour
         {
             currentRoomToUnlock.unlockedRoom = true;
         }
+
+        DialogueWriter.Instance.InitializeDialogue(currentRoomToUnlock.unlockDialogue);
+        
     }
 }
