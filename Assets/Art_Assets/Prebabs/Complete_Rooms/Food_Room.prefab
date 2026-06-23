@@ -13251,7 +13251,7 @@ GameObject:
   - component: {fileID: 3076701834796670221}
   - component: {fileID: 1363131771164507298}
   m_Layer: 0
-  m_Name: Food_Room 1
+  m_Name: Food_Room
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
