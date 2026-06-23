@@ -26,6 +26,7 @@ public class PlagueSpreadRoom : Room
     {
         if (unlockedRoom)
         {
+
             for (int i = 0; i < characterLocations.Count; i++)
             {
                 if (!characterIndex.Values.Contains(i))
@@ -33,14 +34,17 @@ public class PlagueSpreadRoom : Room
                     characterIndex.Add(character, i);
                     character.currentRoom = this;
                     ratThatLeaves = character;
-                    StartCoroutine(ratLeave());
+                    if (character.isInfected)
+                    {
+                        StartCoroutine(ratLeave());
+                    }
                     return characterLocations[i];
                 }
             }
         }
         return character.gameObject.transform;
     }
-    IEnumerator ratLeave()
+    private IEnumerator ratLeave()
     {
         //if rat is infected
         ratThatLeaves.MoveToLocation(leaveLocation);
