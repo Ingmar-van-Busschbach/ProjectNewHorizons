@@ -15,7 +15,8 @@ public class RoomResourceHandler : Room
     [SerializeField] private int woodAmount;
     [SerializeField] private int stoneAmount;
     [SerializeField] private int metalAmount;
-
+    [Tooltip("The effectiveness the stats have when at minimum and maximum stat values. Should be a number between 0-1 and 1-2, with both being the same value away from 1.")]
+    [SerializeField] private Vector2 statEffectiveness;
     private float currentTime;
 
     private void Start()
@@ -42,7 +43,7 @@ public class RoomResourceHandler : Room
             {
                 averageStat = 1;
             }
-            Debug.Log(averageStat);
+            averageStat = RemapFloat(averageStat, new Vector2(0, 2), statEffectiveness);
             currentTime -= 0.1f * characterIndex.Count * averageStat;
         }
         collectButton.gameObject.SetActive(true);
@@ -68,5 +69,9 @@ public class RoomResourceHandler : Room
         StartCoroutine(ResourceHandler());
     }
 
-
+    public float RemapFloat(float value, Vector2 rangeA, Vector2 rangeB)
+    {
+        float t = Mathf.InverseLerp(rangeA.x, rangeA.y, value);
+        return Mathf.Lerp(rangeB.x, rangeB.y, t);
+    }
 }

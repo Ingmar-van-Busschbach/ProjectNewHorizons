@@ -15,7 +15,6 @@ public class Room : MonoBehaviour
 
     public virtual Transform AssignCharacter(Character character)
     {
-        Debug.Log("assignCharacter");
         if (unlockedRoom)
         {
             for (int i = 0; i < characterLocations.Count; i++)

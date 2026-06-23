@@ -8,8 +8,9 @@ using UnityEngine.Rendering;
 public class Character : MonoBehaviour
 {
     [SerializeField] private float idleRotationSpeed = 5;
-    [SerializeField] private StatPlugs statPlugs;
-    [SerializeField] private Stat stats;
+    public StatPlugs statPlugs;
+    public Stat stats;
+    public RatNames names;
 
     // Components
     [HideInInspector] public Room currentRoom;
@@ -48,6 +49,7 @@ public class Character : MonoBehaviour
     private void Start()
     {
         stats = statPlugs.GenerateStats();
+        name = names.GenerateName();
         navMeshAgent.speed *= GetTempo();
     }
 
