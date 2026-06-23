@@ -11,6 +11,7 @@ public class Character : MonoBehaviour
     public StatPlugs statPlugs;
     public Stat stats;
     public RatNames names;
+    public bool isInfected;
 
     // Components
     [HideInInspector] public Room currentRoom;
