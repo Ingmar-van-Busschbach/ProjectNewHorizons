@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a67b89123f8e33b4ea293e76bbb10886, type: 3}
+  m_Name: UniversalStatPlugs
+  m_EditorClassIdentifier: 
+  plugA:
+  - recourcefulness: 5
+    athletics: 1
+    tempo: 0
+    smarts: 0
+  - recourcefulness: 4
+    athletics: 1
+    tempo: 0
+    smarts: 0
+  - recourcefulness: 1
+    athletics: 5
+    tempo: 0
+    smarts: 0
+  - recourcefulness: 1
+    athletics: 4
+    tempo: 0
+    smarts: 0
+  - recourcefulness: 2
+    athletics: 3
+    tempo: 0
+    smarts: 0
+  - recourcefulness: 3
+    athletics: 2
+    tempo: 0
+    smarts: 0
+  plugB:
+  - recourcefulness: 0
+    athletics: 0
+    tempo: 5
+    smarts: 1
+  - recourcefulness: 0
+    athletics: 0
+    tempo: 4
+    smarts: 1
+  - recourcefulness: 0
+    athletics: 0
+    tempo: 1
+    smarts: 5
+  - recourcefulness: 0
+    athletics: 0
+    tempo: 1
+    smarts: 4
+  - recourcefulness: 0
+    athletics: 0
+    tempo: 2
+    smarts: 3
+  - recourcefulness: 0
+    athletics: 0
+    tempo: 3
+    smarts: 2
+  layers: 2
+  maxStats:
+    recourcefulness: 5
+    athletics: 5
+    tempo: 5
+    smarts: 5

@@ -15,6 +15,7 @@ public class RoomResourceHandler : Room
     [SerializeField] private int woodAmount;
     [SerializeField] private int stoneAmount;
     [SerializeField] private int metalAmount;
+    [SerializeField] private int plagueVialAmount;
 
     private float currentTime;
 
@@ -50,6 +51,9 @@ public class RoomResourceHandler : Room
             case ERoomType.ResourceRoomMetal:
                 ResourceManager.instance.ResourceHandler(EResourceType.Metal, metalAmount);
                 break; 
+            case ERoomType.ResearchRoom:
+                ResourceManager.instance.ResourceHandler(EResourceType.PlagueVials, plagueVialAmount);
+                break;
         }
         StartCoroutine(ResourceHandler());
     }

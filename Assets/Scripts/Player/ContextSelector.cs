@@ -1,9 +1,7 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.EnhancedTouch;
-using UnityEngine.UIElements;
 using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 
@@ -45,10 +43,12 @@ public class ContextSelector : MonoBehaviour
     private Camera playerCamera;
     private Coroutine unlockMenuAnimation;
 
+    #if UNITY_WEBGL
     private void Awake()
     {
         EnhancedTouchSupport.Enable();
     }
+    #endif
     private void Start()
     {
         playerCamera = GetComponent<Camera>();
@@ -58,8 +58,9 @@ public class ContextSelector : MonoBehaviour
     {
         Vector2 mousePosition = pointerPositionInput.action.ReadValue<Vector2>();
 
+        #if UNITY_EDITOR
         // On click/touch start
-        if ((clickInput.action.WasPressedThisFrame() || Touch.activeFingers.Count == 1) && !isHeld)
+        if (clickInput.action.WasPressedThisFrame())
         {
             isHeld = true;
 
@@ -88,7 +89,7 @@ public class ContextSelector : MonoBehaviour
         }
 
         // On click/touch end
-        else if ((clickInput.action.WasReleasedThisFrame() || Touch.activeFingers.Count == 0) && isHeld)
+        else if (clickInput.action.WasReleasedThisFrame())
         {
             isHeld = false;
             if(selectionType == ESelectionType.Character)
@@ -96,7 +97,45 @@ public class ContextSelector : MonoBehaviour
                 ReleaseCharacter(mousePosition);
             }
         }
+        #elif UNITY_WEBGL
+        if (Touch.activeFingers.Count == 1 && !isHeld)
+        {
+            isHeld = true;
 
+            Ray ray = playerCamera.ScreenPointToRay(mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
+            {
+                rayHitDistance = hit.distance - dragDistanceOffset; // Distance at which the highlight object will be placed during the drag event.
+                switch (hit.collider.gameObject.layer)
+                {
+                    case 3: // Room layer
+                        SelectRoom(hit);
+                        break;
+                    case 6: // Character layer
+                        SelectCharacter(hit);
+                        break;
+                    default:
+                        Deselect();
+                        break;
+                }
+            }
+            else // Fallback to not selecting anything if no object was hit with the raycast.
+            {
+                Deselect();
+            }
+        }
+
+        // On click/touch end
+        else if (Touch.activeFingers.Count == 0 && isHeld)
+        {
+            isHeld = false;
+            if (selectionType == ESelectionType.Character)
+            {
+                ReleaseCharacter(mousePosition);
+            }
+        }
+        #endif
         // On click/touch continuous
         if (isHeld)
         {
