@@ -1713,6 +1713,7 @@ MonoBehaviour:
   woodToUnlock: 10
   stoneToUnlock: 15
   metalToUnlock: 20
+  ratHat: {fileID: 0}
   collectButton: {fileID: 7958190701420210354}
   roomType: 0
   timeToProduce: 0
@@ -1720,6 +1721,8 @@ MonoBehaviour:
   woodAmount: 0
   stoneAmount: 0
   metalAmount: 0
+  statEffectiveness: {x: 0.5, y: 1.5}
+  plagueVialAmount: 0
 --- !u!4 &8480083828792215178 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3287018360636464709, guid: b51dd6b2d728029478782c8cebf8dd28, type: 3}
