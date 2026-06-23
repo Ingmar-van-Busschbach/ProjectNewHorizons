@@ -9,17 +9,19 @@ public class RoomResourceHandler : Room
     [SerializeField] private Button collectButton;
     public ERoomType roomType;
     [Tooltip("Time in seconds it takes to produce selected resource")]
-    [SerializeField] private float timeToProduce;
+    public float timeToProduce;
     [Header("Amount to produce per resource")]
-    [SerializeField] private int nutritionAmount;
-    [SerializeField] private int woodAmount;
-    [SerializeField] private int stoneAmount;
-    [SerializeField] private int metalAmount;
+    public int nutritionAmount;
+    public int woodAmount;
+    public int stoneAmount;
+    public int metalAmount;
+    public int plagueVialAmount;
+    public bool canSwitchResourceTypes;
     [Tooltip("The effectiveness the stats have when at minimum and maximum stat values. Should be a number between 0-1 and 1-2, with both being the same value away from 1.")]
     [SerializeField] private Vector2 statEffectiveness;
-    [SerializeField] private int plagueVialAmount;
+    
 
-    private float currentTime;
+    [HideInInspector] public float currentTime;
 
     private void Start()
     {

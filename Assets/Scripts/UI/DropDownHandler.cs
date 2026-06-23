@@ -4,8 +4,8 @@ using UnityEngine;
 public class DropDownHandler : MonoBehaviour
 {
     [Tooltip("Put in the room that the dropdown is controlling")]
-    [SerializeField] private RoomResourceHandler room;
-    [SerializeField] private TMP_Dropdown dropdown;
+    public RoomResourceHandler room;
+    public TMP_Dropdown dropdown;
 
     public void GetDropdownValue()
     {
@@ -23,6 +23,6 @@ public class DropDownHandler : MonoBehaviour
                 room.roomType = ERoomType.ResourceRoomMetal;
                 break;
         }
-    
+        room.currentTime = room.timeToProduce;
     }
 }

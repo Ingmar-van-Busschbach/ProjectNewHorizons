@@ -1,6 +1,6 @@
 using System.Collections;
-using UnityEditor;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.EnhancedTouch;
 using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
@@ -23,6 +23,7 @@ public class ContextSelector : MonoBehaviour
     [SerializeField] private Vector2 zoomBounds;
     [SerializeField] private RectTransform roomUnlockMenu;
     [SerializeField] private RectTransform ratInfoMenu;
+    [SerializeField] private RectTransform roomInfoMenu;
 
     [Header("Settings")]
     [Tooltip("The offset for the drag highlight. Should be a positive numner between 0 and 5.")]
@@ -40,6 +41,7 @@ public class ContextSelector : MonoBehaviour
     private float lastMultiTouchDistance;
     private Vector2 roomUnlockMenuPosition;
     private Vector2 ratInfoMenuPosition;
+    private Vector2 roomInfoMenuPosition;
 
     // Components
     private GameObject selectedObject;
@@ -47,8 +49,10 @@ public class ContextSelector : MonoBehaviour
     private Camera playerCamera;
     private Coroutine roomUnlockMenuAnimation;
     private Coroutine ratInfoMenuAnimation;
+    private Coroutine roomInfoMenuAnimation;
+    private PointerEventData pointerEventData;
 
-    #if UNITY_WEBGL
+#if UNITY_WEBGL
     private void Awake()
     {
         EnhancedTouchSupport.Enable();
@@ -59,6 +63,7 @@ public class ContextSelector : MonoBehaviour
         playerCamera = GetComponent<Camera>();
         roomUnlockMenuPosition = roomUnlockMenu.anchoredPosition;
         ratInfoMenuPosition = ratInfoMenu.anchoredPosition;
+        roomInfoMenuPosition = roomInfoMenu.anchoredPosition;
     }
 
     private void Update()
@@ -104,7 +109,7 @@ public class ContextSelector : MonoBehaviour
                 ReleaseCharacter(mousePosition);
             }
         }
-        #elif UNITY_WEBGL
+#elif UNITY_WEBGL
         if (Touch.activeFingers.Count == 1 && !isHeld)
         {
             isHeld = true;
@@ -142,7 +147,7 @@ public class ContextSelector : MonoBehaviour
                 ReleaseCharacter(mousePosition);
             }
         }
-        #endif
+#endif
         // On click/touch continuous
         if (isHeld)
         {
@@ -172,17 +177,10 @@ public class ContextSelector : MonoBehaviour
         selectedObject = hit.collider.gameObject;
         if (selectedObject.TryGetComponent(out Character character))
         {
-            if (roomUnlockMenuAnimation != null)
-            {
-                StopCoroutine(roomUnlockMenuAnimation);
-            }
-            roomUnlockMenuAnimation = StartCoroutine(AnimateMenu(roomUnlockMenu, roomUnlockMenuPosition));
-            if (ratInfoMenuAnimation != null)
-            {
-                StopCoroutine(ratInfoMenuAnimation);
-            }
-            ratInfoMenuAnimation = StartCoroutine(AnimateMenu(ratInfoMenu, ratInfoMenuPosition * new Vector2(-1, 1)));
-            if(ratInfoMenu.TryGetComponent(out RatStatDisplay ratStatDisplay))
+            AnimateRoomUnlockMenu(false);
+            AnimateRatInfoMenu(true);
+            AnimateRoomInfoMenu(false);
+            if (ratInfoMenu.TryGetComponent(out RatStatDisplay ratStatDisplay))
             {
                 ratStatDisplay.DisplayStats(character.stats, character.statPlugs, character.name);
             }
@@ -194,21 +192,21 @@ public class ContextSelector : MonoBehaviour
         selectedObject = hit.collider.gameObject;
         if(selectedObject.TryGetComponent(out Room room))
         {
-            if (ratInfoMenuAnimation != null)
-            {
-                StopCoroutine(ratInfoMenuAnimation);
-            }
-            ratInfoMenuAnimation = StartCoroutine(AnimateMenu(ratInfoMenu, ratInfoMenuPosition));
+            AnimateRatInfoMenu(false);
             if (!room.unlockedRoom)
             {
-                if (roomUnlockMenuAnimation != null)
-                {
-                    StopCoroutine(roomUnlockMenuAnimation);
-                }
-                roomUnlockMenuAnimation = StartCoroutine(AnimateMenu(roomUnlockMenu, roomUnlockMenuPosition * new Vector2(1, -1)));
+                AnimateRoomUnlockMenu(true);
                 if (roomUnlockMenu.TryGetComponent(out UnlockMenuHandler unlockMenuHandler))
                 {
                     unlockMenuHandler.SetRoomToUnlock(room);
+                }
+            }
+            else
+            {
+                AnimateRoomInfoMenu(true);
+                if(roomInfoMenu.TryGetComponent(out RoomInfoHandler roomInfoHandler))
+                {
+                    roomInfoHandler.DisplayInfo(room);
                 }
             }
         }
@@ -218,16 +216,33 @@ public class ContextSelector : MonoBehaviour
     {
         selectionType = ESelectionType.None;
         selectedObject = null;
+    }
+
+    public void AnimateRoomUnlockMenu(bool onScreen)
+    {
         if (roomUnlockMenuAnimation != null)
         {
             StopCoroutine(roomUnlockMenuAnimation);
         }
-        roomUnlockMenuAnimation = StartCoroutine(AnimateMenu(roomUnlockMenu, roomUnlockMenuPosition));
+        roomUnlockMenuAnimation = StartCoroutine(AnimateMenu(roomUnlockMenu, roomUnlockMenuPosition * new Vector2(1, onScreen ? -1 : 1)));
+    }
+
+    public void AnimateRatInfoMenu(bool onScreen)
+    {
         if (ratInfoMenuAnimation != null)
         {
             StopCoroutine(ratInfoMenuAnimation);
         }
-        ratInfoMenuAnimation = StartCoroutine(AnimateMenu(ratInfoMenu, ratInfoMenuPosition));
+        ratInfoMenuAnimation = StartCoroutine(AnimateMenu(ratInfoMenu, ratInfoMenuPosition * new Vector2(onScreen ? -1 : 1, 1)));
+    }
+
+    public void AnimateRoomInfoMenu(bool onScreen)
+    {
+        if (roomInfoMenuAnimation != null)
+        {
+            StopCoroutine(roomInfoMenuAnimation);
+        }
+        roomInfoMenuAnimation = StartCoroutine(AnimateMenu(roomInfoMenu, roomInfoMenuPosition * new Vector2(onScreen ? -1 : 1, 1)));
     }
     private IEnumerator AnimateMenu(RectTransform menu, Vector2 position)
     {

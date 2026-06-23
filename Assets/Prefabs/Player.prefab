@@ -187,18 +187,19 @@ MonoBehaviour:
   mouseScrollInput: {fileID: 0}
   layerMask:
     serializedVersion: 2
-    m_Bits: 72
+    m_Bits: 104
   draggedObjectPrefab: {fileID: 8325694758835055321, guid: 625167c9094e255489d8ad53dab69bcd, type: 3}
   bottomLeftBounds: {fileID: 5792804884207744616}
   topRightBounds: {fileID: 5732855943325558644}
   zoomBounds: {x: -20, y: -5}
   roomUnlockMenu: {fileID: 0}
   ratInfoMenu: {fileID: 0}
+  roomInfoMenu: {fileID: 0}
   dragDistanceOffset: 0.5
   cameraDragSpeed: 0.01
   touchZoomSpeed: 0.01
   mouseZoomSpeed: 0.5
-  menuAnimationSpeed: 0.5
+  menuAnimationSpeed: 1
 --- !u!1 &5253339291096677594
 GameObject:
   m_ObjectHideFlags: 0
