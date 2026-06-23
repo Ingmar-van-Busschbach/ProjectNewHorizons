@@ -26,12 +26,14 @@ public class ResourceManager : MonoBehaviour
     [SerializeField] TMP_Text stoneCounter;
     [SerializeField] TMP_Text metalCounter;
     [SerializeField] Slider plagueSlider;
+    [SerializeField] TMP_Text PlagueVialCounter;
 
     public int nutrition;
     public int stone;
     public int wood;
     public int metal;
     public int plague;
+    public int plagueVials;
 
     private void Awake()
     {
@@ -91,6 +93,12 @@ public class ResourceManager : MonoBehaviour
                 plague += amount;
                 plagueSlider.value = plague; 
                 break;
+            case EResourceType.PlagueVials:
+                plagueVials += amount;
+                PlagueVialCounter.text = plagueVials.ToString();
+                PlagueManager.instance.checkPlagueVials();
+                break;
+                
         }
     }
 

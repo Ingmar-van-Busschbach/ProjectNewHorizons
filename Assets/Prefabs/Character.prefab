@@ -208,6 +208,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   idleRotationSpeed: 5
+  statPlugs: {fileID: 11400000, guid: b0863446f928c824da1cc0249c7e7a03, type: 2}
+  stats:
+    recourcefulness: 0
+    athletics: 0
+    tempo: 0
+    smarts: 0
+  names: {fileID: 11400000, guid: e263ad6be49ca584bafb1ca03303b6e5, type: 2}
   currentRoom: {fileID: 0}
 --- !u!65 &7122343822052281349
 BoxCollider:

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Room : MonoBehaviour
 {
-    [SerializeField] private List<Transform> characterLocations = new();
+    [SerializeField] protected List<Transform> characterLocations = new();
     [SerializeField] protected Dictionary<Character, int> characterIndex = new();
     public bool unlockedRoom;
     public string roomName;
@@ -13,7 +13,7 @@ public class Room : MonoBehaviour
     public int metalToUnlock;
     public Sprite ratHat;
 
-    public Transform AssignCharacter(Character character)
+    public virtual Transform AssignCharacter(Character character)
     {
         if (unlockedRoom)
         {
