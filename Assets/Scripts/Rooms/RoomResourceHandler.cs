@@ -17,6 +17,8 @@ public class RoomResourceHandler : Room
     [SerializeField] private int metalAmount;
     [Tooltip("The effectiveness the stats have when at minimum and maximum stat values. Should be a number between 0-1 and 1-2, with both being the same value away from 1.")]
     [SerializeField] private Vector2 statEffectiveness;
+    [SerializeField] private int plagueVialAmount;
+
     private float currentTime;
 
     private void Start()
@@ -65,6 +67,9 @@ public class RoomResourceHandler : Room
             case ERoomType.ResourceRoomMetal:
                 ResourceManager.instance.ResourceHandler(EResourceType.Metal, metalAmount);
                 break; 
+            case ERoomType.ResearchRoom:
+                ResourceManager.instance.ResourceHandler(EResourceType.PlagueVials, plagueVialAmount);
+                break;
         }
         StartCoroutine(ResourceHandler());
     }
