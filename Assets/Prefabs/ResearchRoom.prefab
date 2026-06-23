@@ -227,23 +227,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6261181337627119849, guid: 413f901370fc68e41ae385d3bc3a9cd6, type: 3}
       propertyPath: m_Name
-      value: ResearchRoom Variant
-      objectReference: {fileID: 0}
-    - target: {fileID: 7958190701420210354, guid: 413f901370fc68e41ae385d3bc3a9cd6, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7973591762952130587, guid: 413f901370fc68e41ae385d3bc3a9cd6, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8480083828792215178, guid: 413f901370fc68e41ae385d3bc3a9cd6, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.76
-      objectReference: {fileID: 0}
-    - target: {fileID: 8480083828792215178, guid: 413f901370fc68e41ae385d3bc3a9cd6, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -0.97
+      value: ResearchRoom
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
